@@ -14,7 +14,7 @@ A comprehensive Go library for working with FHIR (Fast Healthcare Interoperabili
 ## Installation
 
 ```bash
-go get github.com/codeninja55/go-radx/fhir
+go get github.com/codeninja55/go-zh-fhir/fhir
 ```
 
 ## Quick Start
@@ -28,8 +28,8 @@ import (
     "encoding/json"
     "fmt"
 
-    "github.com/codeninja55/go-radx/fhir/r4/resources"
-    "github.com/codeninja55/go-radx/fhir/primitives"
+    "github.com/codeninja55/go-zh-fhir/fhir/r4/resources"
+    "github.com/codeninja55/go-zh-fhir/fhir/primitives"
 )
 
 func main() {
@@ -75,7 +75,7 @@ import (
     "fmt"
     "os"
 
-    "github.com/codeninja55/go-radx/fhir/r4/resources"
+    "github.com/codeninja55/go-zh-fhir/fhir/r4/resources"
 )
 
 func main() {
@@ -110,7 +110,7 @@ func main() {
 FHIR dates support partial precision:
 
 ```go
-import "github.com/codeninja55/go-radx/fhir/primitives"
+import "github.com/codeninja55/go-zh-fhir/fhir/primitives"
 
 // Year only
 yearDate := primitives.MustDate("2024")
@@ -274,10 +274,10 @@ The library supports both FHIR R4 and R5:
 
 ```go
 // R4 (most widely adopted)
-import "github.com/codeninja55/go-radx/fhir/r4/resources"
+import "github.com/codeninja55/go-zh-fhir/fhir/r4/resources"
 
 // R5 (latest specification)
-import "github.com/codeninja55/go-radx/fhir/r5/resources"
+import "github.com/codeninja55/go-zh-fhir/fhir/r5/resources"
 ```
 
 **Key Differences:**
@@ -432,17 +432,17 @@ The library is generated from official FHIR StructureDefinitions. To regenerate:
 
 ### vs google/fhir
 
-- **go-radx/fhir**: Simple, idiomatic Go with no dependencies
+- **go-zh-fhir/fhir**: Simple, idiomatic Go with no dependencies
 - **google/fhir**: Protocol buffer based, more complex
 
 ### vs samply/golang-fhir-models
 
-- **go-radx/fhir**: Custom primitive types with validation, R5 support
+- **go-zh-fhir/fhir**: Custom primitive types with validation, R5 support
 - **samply/golang-fhir-models**: String-based primitives, R4 only
 
 ### vs friendly-fhir/go-fhir
 
-- **go-radx/fhir**: Generated from official StructureDefinitions
+- **go-zh-fhir/fhir**: Generated from official StructureDefinitions
 - **friendly-fhir/go-fhir**: Handwritten, may lag behind spec updates
 
 ## Contributing
@@ -461,4 +461,4 @@ See LICENSE file for details.
 
 - [FHIR R4 Specification](https://hl7.org/fhir/R4/)
 - [FHIR R5 Specification](https://hl7.org/fhir/R5/)
-- [go-radx GitHub](https://github.com/codeninja55/go-radx)
+- [go-zh-fhir GitHub](https://github.com/codeninja55/go-zh-fhir)

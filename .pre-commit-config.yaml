@@ -1,4 +1,4 @@
-# Pre-commit hooks for go-radx
+# Pre-commit hooks for go-zh-fhir
 # Install: pre-commit install
 # Run manually: pre-commit run --all-files
 # Update hooks: pre-commit autoupdate

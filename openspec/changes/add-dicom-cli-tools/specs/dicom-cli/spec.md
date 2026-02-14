@@ -7,7 +7,7 @@
 The CLI MUST inject and display build metadata including version, commit hash, and build date.
 
 #### Scenario: Version flag displays build info
-- **WHEN** user runs `radx --version` or `radx -V`
+- **WHEN** user runs `zh-fhir --version` or `zh-fhir -V`
 - **THEN** the system displays:
   - Application name
   - Version (git tag or branch)
@@ -50,7 +50,7 @@ The CLI MUST support global configuration options available to all subcommands.
 The CLI MUST provide a C-ECHO command to verify DICOM network connectivity.
 
 #### Scenario: Successful C-ECHO verification
-- **WHEN** user runs `radx dicom cecho --host pacs.example.com --port 11112`
+- **WHEN** user runs `zh-fhir dicom cecho --host pacs.example.com --port 11112`
 - **THEN** the system establishes DICOM association
 - **AND** sends C-ECHO request
 - **AND** receives C-ECHO response with status 0x0000 (Success)
@@ -59,20 +59,20 @@ The CLI MUST provide a C-ECHO command to verify DICOM network connectivity.
 - **AND** exits with code 0
 
 #### Scenario: Failed C-ECHO due to network error
-- **WHEN** user runs `radx dicom cecho --host unreachable.example.com --port 11112`
+- **WHEN** user runs `zh-fhir dicom cecho --host unreachable.example.com --port 11112`
 - **AND** the host is unreachable or connection times out
 - **THEN** the system displays clear error message
 - **AND** provides troubleshooting hint
 - **AND** exits with code 4 (network error)
 
 #### Scenario: C-ECHO with custom AE titles
-- **WHEN** user runs `radx dicom cecho --host pacs.example.com --called-ae PACS --calling-ae RADX`
+- **WHEN** user runs `zh-fhir dicom cecho --host pacs.example.com --called-ae PACS --calling-ae RADX`
 - **THEN** the association uses Called AE Title "PACS"
 - **AND** the association uses Calling AE Title "RADX"
 - **AND** C-ECHO proceeds normally
 
 #### Scenario: C-ECHO with timeout
-- **WHEN** user runs `radx dicom cecho --host slow.example.com --timeout 5s`
+- **WHEN** user runs `zh-fhir dicom cecho --host slow.example.com --timeout 5s`
 - **AND** the server doesn't respond within 5 seconds
 - **THEN** the operation times out
 - **AND** displays timeout error message
@@ -83,7 +83,7 @@ The CLI MUST provide a C-ECHO command to verify DICOM network connectivity.
 The CLI MUST provide a C-STORE command to send DICOM files to a PACS.
 
 #### Scenario: Store single DICOM file
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com file.dcm`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com file.dcm`
 - **THEN** the system establishes DICOM association
 - **AND** sends file.dcm via C-STORE
 - **AND** receives C-STORE response with status 0x0000
@@ -92,7 +92,7 @@ The CLI MUST provide a C-STORE command to send DICOM files to a PACS.
 - **AND** exits with code 0
 
 #### Scenario: Store directory of DICOM files with progress
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com --dir /path/to/studies/`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com --dir /path/to/studies/`
 - **THEN** the system finds all DICOM files recursively
 - **AND** establishes DICOM association
 - **AND** sends each file via C-STORE
@@ -102,39 +102,39 @@ The CLI MUST provide a C-STORE command to send DICOM files to a PACS.
 - **AND** exits with code 0 if all succeeded, 1 if any failed
 
 #### Scenario: Store with rate limiting by file count
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com --dir /studies/ --rate-limit 10`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com --dir /studies/ --rate-limit 10`
 - **THEN** the system limits transmission to maximum 10 files per second
 - **AND** applies rate limiting between individual C-STORE operations
 - **AND** displays progress with rate information
 - **AND** completes all transfers successfully
 
 #### Scenario: Store with rate limiting by bandwidth
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com --dir /studies/ --rate-limit-mb 50`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com --dir /studies/ --rate-limit-mb 50`
 - **THEN** the system limits transmission to maximum 50 MB per second
 - **AND** calculates rate based on file sizes
 - **AND** throttles transmission accordingly
 - **AND** displays bandwidth usage in progress indicator
 
 #### Scenario: Store with burst size configuration
-- **WHEN** user runs `radx dicom cstore --rate-limit 5 --burst-size 10 file1.dcm file2.dcm ... file15.dcm`
+- **WHEN** user runs `zh-fhir dicom cstore --rate-limit 5 --burst-size 10 file1.dcm file2.dcm ... file15.dcm`
 - **THEN** the system sends first 10 files immediately (burst)
 - **AND** throttles remaining files at 5 files/second
 - **AND** completes all transfers
 
 #### Scenario: Rate limiting with zero limit (unlimited)
-- **WHEN** user runs `radx dicom cstore --rate-limit 0 --dir /studies/`
+- **WHEN** user runs `zh-fhir dicom cstore --rate-limit 0 --dir /studies/`
 - **THEN** the system sends files as fast as possible
 - **AND** no rate limiting is applied
 - **AND** transfers complete at maximum speed
 
 #### Scenario: Store with transfer syntax selection
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com --transfer-syntax 1.2.840.10008.1.2.1 file.dcm`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com --transfer-syntax 1.2.840.10008.1.2.1 file.dcm`
 - **THEN** the association negotiates Explicit VR Little Endian transfer syntax
 - **AND** the file is transmitted with negotiated transfer syntax
 - **AND** C-STORE succeeds
 
 #### Scenario: Store with failed file
-- **WHEN** user runs `radx dicom cstore --host pacs.example.com file1.dcm invalid.dcm file3.dcm`
+- **WHEN** user runs `zh-fhir dicom cstore --host pacs.example.com file1.dcm invalid.dcm file3.dcm`
 - **AND** invalid.dcm is not a valid DICOM file
 - **THEN** the system reports error for invalid.dcm
 - **AND** continues processing file3.dcm
@@ -146,7 +146,7 @@ The CLI MUST provide a C-STORE command to send DICOM files to a PACS.
 The CLI MUST provide a dump command to inspect DICOM file contents.
 
 #### Scenario: Dump single DICOM file as table
-- **WHEN** user runs `radx dicom dump file.dcm`
+- **WHEN** user runs `zh-fhir dicom dump file.dcm`
 - **THEN** the system parses the DICOM file
 - **AND** displays tags in ASCII table format with columns: Tag, VR, Name, Value
 - **AND** includes File Meta Information (group 0002)
@@ -154,14 +154,14 @@ The CLI MUST provide a dump command to inspect DICOM file contents.
 - **AND** exits with code 0
 
 #### Scenario: Dump single DICOM file as JSON
-- **WHEN** user runs `radx dicom dump --format json file.dcm`
+- **WHEN** user runs `zh-fhir dicom dump --format json file.dcm`
 - **THEN** the system parses the DICOM file
 - **AND** outputs valid JSON to stdout
 - **AND** JSON includes all DICOM tags with tag, vr, name, value fields
 - **AND** exits with code 0
 
 #### Scenario: Dump directory of DICOM files
-- **WHEN** user runs `radx dicom dump --dir /path/to/studies/ --recursive`
+- **WHEN** user runs `zh-fhir dicom dump --dir /path/to/studies/ --recursive`
 - **THEN** the system finds all .dcm files recursively
 - **AND** parses each file
 - **AND** displays metadata for each file
@@ -169,28 +169,28 @@ The CLI MUST provide a dump command to inspect DICOM file contents.
 - **AND** exits with code 0
 
 #### Scenario: Dump with pixel data processing
-- **WHEN** user runs `radx dicom dump --process-pixel-data file.dcm`
+- **WHEN** user runs `zh-fhir dicom dump --process-pixel-data file.dcm`
 - **THEN** the system parses pixel data element
 - **AND** decompresses pixel data if compressed
 - **AND** displays pixel data statistics (dimensions, depth, samples)
 - **AND** does not extract pixel values by default
 
 #### Scenario: Dump with pixel data extraction
-- **WHEN** user runs `radx dicom dump --process-pixel-data --store-pixel-data --output-dir /tmp file.dcm`
+- **WHEN** user runs `zh-fhir dicom dump --process-pixel-data --store-pixel-data --output-dir /tmp file.dcm`
 - **THEN** the system extracts pixel data
 - **AND** writes pixel data to /tmp/file.raw or /tmp/file.png
 - **AND** displays confirmation message
 - **AND** continues with metadata display
 
 #### Scenario: Dump invalid DICOM file
-- **WHEN** user runs `radx dicom dump invalid.dcm`
+- **WHEN** user runs `zh-fhir dicom dump invalid.dcm`
 - **AND** invalid.dcm is not a valid DICOM file
 - **THEN** the system displays error message
 - **AND** provides diagnostic information (file size, first bytes)
 - **AND** exits with code 3 (DICOM parsing error)
 
 #### Scenario: Dump with CSV output
-- **WHEN** user runs `radx dicom dump --format csv file1.dcm file2.dcm file3.dcm`
+- **WHEN** user runs `zh-fhir dicom dump --format csv file1.dcm file2.dcm file3.dcm`
 - **THEN** the system outputs CSV to stdout
 - **AND** CSV has header row: Tag,VR,Name,Value,File
 - **AND** each DICOM tag appears as a CSV row
@@ -202,7 +202,7 @@ The CLI MUST provide a dump command to inspect DICOM file contents.
 The CLI MUST provide a modify command to change DICOM tag values.
 
 #### Scenario: Insert or update single tag
-- **WHEN** user runs `radx dicom modify -i "0010,0010=Doe^John" input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify -i "0010,0010=Doe^John" input.dcm -o output.dcm`
 - **THEN** the system parses input.dcm
 - **AND** sets Patient Name (0010,0010) to "Doe^John"
 - **AND** writes modified file to output.dcm
@@ -210,14 +210,14 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** exits with code 0
 
 #### Scenario: Delete single tag
-- **WHEN** user runs `radx dicom modify -e "0010,0010" input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify -e "0010,0010" input.dcm -o output.dcm`
 - **THEN** the system removes Patient Name (0010,0010) tag
 - **AND** writes modified file without the tag
 - **AND** preserves all other tags
 - **AND** exits with code 0
 
 #### Scenario: Delete tag group with wildcard
-- **WHEN** user runs `radx dicom modify -e "0010,xxxx" input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify -e "0010,xxxx" input.dcm -o output.dcm`
 - **AND** user confirms the operation (interactive prompt)
 - **THEN** the system removes all tags in group 0010 (patient information)
 - **AND** writes modified file
@@ -225,7 +225,7 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** exits with code 0
 
 #### Scenario: Regenerate Study Instance UID
-- **WHEN** user runs `radx dicom modify --regenerate-study-uid input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify --regenerate-study-uid input.dcm -o output.dcm`
 - **THEN** the system generates new Study Instance UID
 - **AND** replaces (0020,000D) Study Instance UID with new value
 - **AND** preserves all other tags
@@ -234,7 +234,7 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** exits with code 0
 
 #### Scenario: Regenerate all UIDs
-- **WHEN** user runs `radx dicom modify --regenerate-all-uids input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify --regenerate-all-uids input.dcm -o output.dcm`
 - **THEN** the system generates new Study Instance UID
 - **AND** generates new Series Instance UID
 - **AND** generates new SOP Instance UID
@@ -243,7 +243,7 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** exits with code 0
 
 #### Scenario: Batch modify directory
-- **WHEN** user runs `radx dicom modify --dir /input/ --output-dir /output/ -i "0008,0070=ACME Medical"`
+- **WHEN** user runs `zh-fhir dicom modify --dir /input/ --output-dir /output/ -i "0008,0070=ACME Medical"`
 - **THEN** the system processes all DICOM files in /input/ recursively
 - **AND** applies modification to each file
 - **AND** writes modified files to /output/ preserving directory structure
@@ -252,14 +252,14 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** exits with code 0
 
 #### Scenario: Modify with backup
-- **WHEN** user runs `radx dicom modify --backup -i "0010,0010=Anonymous" file.dcm`
+- **WHEN** user runs `zh-fhir dicom modify --backup -i "0010,0010=Anonymous" file.dcm`
 - **THEN** the system creates backup file.dcm.bak
 - **AND** modifies file.dcm in place
 - **AND** displays confirmation message
 - **AND** exits with code 0
 
 #### Scenario: Modify in place without output flag
-- **WHEN** user runs `radx dicom modify -i "0010,0010=Doe^John" input.dcm`
+- **WHEN** user runs `zh-fhir dicom modify -i "0010,0010=Doe^John" input.dcm`
 - **AND** no --output or --output-dir flag is provided
 - **THEN** the system prompts user to confirm in-place modification
 - **AND** if confirmed, modifies input.dcm
@@ -267,7 +267,7 @@ The CLI MUST provide a modify command to change DICOM tag values.
 - **AND** returns appropriate exit code
 
 #### Scenario: Multiple modifications in single command
-- **WHEN** user runs `radx dicom modify -i "0010,0010=Doe^John" -i "0010,0030=19800101" -e "0010,0040" input.dcm -o output.dcm`
+- **WHEN** user runs `zh-fhir dicom modify -i "0010,0010=Doe^John" -i "0010,0030=19800101" -e "0010,0040" input.dcm -o output.dcm`
 - **THEN** the system applies all modifications in order
 - **AND** inserts/updates Patient Name
 - **AND** inserts/updates Patient Birth Date
@@ -280,7 +280,7 @@ The CLI MUST provide a modify command to change DICOM tag values.
 The CLI MUST provide an SCP server command to receive DICOM objects.
 
 #### Scenario: Start SCP server with defaults
-- **WHEN** user runs `radx dicom scp --output-dir /dicom-data`
+- **WHEN** user runs `zh-fhir dicom scp --output-dir /dicom-data`
 - **THEN** the system starts DICOM SCP server on port 11112
 - **AND** uses AE Title "RADX_SCP"
 - **AND** accepts only Secondary Capture SOP Classes by default
@@ -308,20 +308,20 @@ The CLI MUST provide an SCP server command to receive DICOM objects.
 - **AND** does not store file
 
 #### Scenario: SCP server with custom SOP Class filter
-- **WHEN** user runs `radx dicom scp --output-dir /data --accept-sop-class 1.2.840.10008.5.1.4.1.1.2 --accept-sop-class 1.2.840.10008.5.1.4.1.1.4`
+- **WHEN** user runs `zh-fhir dicom scp --output-dir /data --accept-sop-class 1.2.840.10008.5.1.4.1.1.2 --accept-sop-class 1.2.840.10008.5.1.4.1.1.4`
 - **THEN** the system accepts CT Image Storage (1.2.840.10008.5.1.4.1.1.2)
 - **AND** accepts MR Image Storage (1.2.840.10008.5.1.4.1.1.4)
 - **AND** rejects all other SOP Classes
 - **AND** logs accepted SOP Classes on startup
 
 #### Scenario: SCP server accepts all SOP Classes
-- **WHEN** user runs `radx dicom scp --output-dir /data --accept-all`
+- **WHEN** user runs `zh-fhir dicom scp --output-dir /data --accept-all`
 - **THEN** the system accepts any SOP Class
 - **AND** does not filter by SOP Class
 - **AND** logs "Accepting all SOP Classes" on startup
 
 #### Scenario: SCP server with custom port and AE title
-- **WHEN** user runs `radx dicom scp --port 104 --ae-title MY_SCP --output-dir /data`
+- **WHEN** user runs `zh-fhir dicom scp --port 104 --ae-title MY_SCP --output-dir /data`
 - **THEN** the system listens on port 104
 - **AND** uses AE Title "MY_SCP"
 - **AND** accepts associations with Called AE Title "MY_SCP"
@@ -344,7 +344,7 @@ The CLI MUST provide an SCP server command to receive DICOM objects.
 - **AND** exits with code 0
 
 #### Scenario: SCP server with association limit
-- **WHEN** user runs `radx dicom scp --max-associations 10 --output-dir /data`
+- **WHEN** user runs `zh-fhir dicom scp --max-associations 10 --output-dir /data`
 - **AND** 10 associations are already active
 - **AND** new association request arrives
 - **THEN** the system rejects new association
@@ -356,7 +356,7 @@ The CLI MUST provide an SCP server command to receive DICOM objects.
 The CLI MUST provide an organize command to restructure DICOM files by UID.
 
 #### Scenario: Organize directory with copy (default)
-- **WHEN** user runs `radx dicom organize --input-dir /unorganized --output-dir /organized`
+- **WHEN** user runs `zh-fhir dicom organize --input-dir /unorganized --output-dir /organized`
 - **THEN** the system scans /unorganized recursively for DICOM files
 - **AND** parses each file to extract Study/Series/Instance UIDs
 - **AND** copies files to `/organized/<study-uid>/<series-uid>/<instance-uid>.dcm`
@@ -366,7 +366,7 @@ The CLI MUST provide an organize command to restructure DICOM files by UID.
 - **AND** exits with code 0
 
 #### Scenario: Organize directory with move
-- **WHEN** user runs `radx dicom organize --input-dir /unorganized --output-dir /organized --move`
+- **WHEN** user runs `zh-fhir dicom organize --input-dir /unorganized --output-dir /organized --move`
 - **THEN** the system scans /unorganized recursively for DICOM files
 - **AND** parses each file to extract Study/Series/Instance UIDs
 - **AND** moves files to `/organized/<study-uid>/<series-uid>/<instance-uid>.dcm`
@@ -401,7 +401,7 @@ The CLI MUST provide an organize command to restructure DICOM files by UID.
 - **AND** includes error in summary
 
 #### Scenario: Organize with dry-run
-- **WHEN** user runs `radx dicom organize --input-dir /in --output-dir /out --dry-run`
+- **WHEN** user runs `zh-fhir dicom organize --input-dir /in --output-dir /out --dry-run`
 - **THEN** the system scans and parses all files
 - **AND** displays planned operations (copy/move paths)
 - **AND** does NOT copy or move any files
@@ -409,7 +409,7 @@ The CLI MUST provide an organize command to restructure DICOM files by UID.
 - **AND** exits with code 0
 
 #### Scenario: Organize with JSON output
-- **WHEN** user runs `radx dicom organize --input-dir /in --output-dir /out --format json`
+- **WHEN** user runs `zh-fhir dicom organize --input-dir /in --output-dir /out --format json`
 - **THEN** the system outputs JSON to stdout
 - **AND** JSON includes array of operations with source, target, status
 - **AND** performs organization normally
@@ -517,21 +517,21 @@ The CLI MUST provide configurable structured logging.
 The CLI MUST provide comprehensive inline help.
 
 #### Scenario: Global help
-- **WHEN** user runs `radx --help` or `radx -h`
+- **WHEN** user runs `zh-fhir --help` or `zh-fhir -h`
 - **THEN** the system displays main help screen
 - **AND** lists all available commands
 - **AND** shows global flags
 - **AND** exits with code 0
 
 #### Scenario: Subcommand help
-- **WHEN** user runs `radx dicom --help`
+- **WHEN** user runs `zh-fhir dicom --help`
 - **THEN** the system displays DICOM subcommand help
 - **AND** lists all DICOM commands
 - **AND** shows available flags
 - **AND** exits with code 0
 
 #### Scenario: Command-specific help
-- **WHEN** user runs `radx dicom cstore --help`
+- **WHEN** user runs `zh-fhir dicom cstore --help`
 - **THEN** the system displays cstore command help
 - **AND** describes command purpose
 - **AND** lists all flags with descriptions
@@ -539,7 +539,7 @@ The CLI MUST provide comprehensive inline help.
 - **AND** exits with code 0
 
 #### Scenario: Invalid command shows help
-- **WHEN** user runs `radx dicom invalid-command`
+- **WHEN** user runs `zh-fhir dicom invalid-command`
 - **THEN** the system displays error "unknown command"
 - **AND** suggests similar commands if available
 - **AND** displays brief help or usage

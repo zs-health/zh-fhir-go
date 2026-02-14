@@ -2,7 +2,7 @@
 
 ## Context
 
-go-radx provides comprehensive FHIR R4/R5 resources (304 total) and complete DICOM core with DIMSE networking, but
+go-zh-fhir provides comprehensive FHIR R4/R5 resources (304 total) and complete DICOM core with DIMSE networking, but
 lacks the interoperability layer needed for production healthcare systems. This design addresses four critical gaps:
 
 1. **DICOM ↔ FHIR conversion** - Mapping radiology imaging data to clinical systems
@@ -1066,9 +1066,9 @@ C. Full-featured CLI (high effort, maintenance burden)
 
 **CLI Tools**:
 ```bash
-radx smart launch --ehr https://launch.smarthealthit.org
-radx uscore validate --profile patient patient.json
-radx subscribe create --topic patient-update --webhook https://app.example.com/notify
+zh-fhir smart launch --ehr https://launch.smarthealthit.org
+zh-fhir uscore validate --profile patient patient.json
+zh-fhir subscribe create --topic patient-update --webhook https://app.example.com/notify
 ```
 
 ## References

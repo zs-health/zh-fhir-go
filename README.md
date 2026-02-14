@@ -1,64 +1,122 @@
-# zh-fhir-go
+# 🏥 ZARISH HEALTH - FHIR R5 & HL7 v2 Go Library
 
-A comprehensive Go library for healthcare interoperability standards focusing on **FHIR R5** and **HL7 v2** resources.
+**Status**: Integrated with zh-core ✅  
+**Current Phase**: Phase 1 - Core Resource Implementation  
+**Last Updated**: February 14, 2026  
+**Version**: 0.1.0-alpha
 
-[![Go Version](https://img.shields.io/badge/Go-1.25.4+-00ADD8?style=flat&logo=go)](https://go.dev)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+## 📋 Table of Contents
 
-## Overview
+1. [Vision & Mission](#-vision--mission)
+2. [Project Identity](#-project-identity)
+3. [Features](#-features)
+4. [Technology Stack](#-technology-stack)
+5. [Project Structure](#-project-structure)
+6. [Quick Start Guide](#-quick-start-guide)
+7. [Development Standards](#-development-standards)
+8. [Resources & Support](#-resources--support)
 
-`zh-fhir-go` provides robust, production-ready implementations of healthcare standards with a focus on type safety, performance, and developer experience. Built for clinical systems integration and healthcare data exchange.
+## 🎯 Vision & Mission
 
-## Features
+### Vision
+To provide the foundational data structures and interoperability tools for the **ZARISH HEALTH** ecosystem, ensuring seamless data exchange across humanitarian health settings using global standards.
+
+### Mission
+* **Standardize**: Implement full FHIR R5 and HL7 v2 specifications for Go-based microservices.
+* **Simplify**: Provide type-safe, easy-to-use Go structs for complex healthcare resources.
+* **Integrate**: Enable `zh-core` microservices to communicate using industry-standard protocols.
+
+## 🆔 Project Identity
+
+* **Organization**: [zs-health](https://github.com/zs-health)
+* **Project Name**: zh-fhir-go
+* **Parent Platform**: [ZARISH HEALTH](https://github.com/zs-health/zh-core)
+* **Standards Compliance**: FHIR R5, HL7 v2.x, ICD-11
+
+## ✨ Features
 
 ### FHIR R5 Support
-
-Complete implementation of HL7 FHIR Release 5 specification:
-
-- **158 FHIR Resources** - All R5 resources generated from official HL7 StructureDefinitions
-- **Type-Safe API** - Compile-time safety with Go structs matching FHIR specification exactly
-- **Comprehensive Validation** - Built-in validation for cardinality, mandatory elements, and choice types.
-- **SMART on FHIR** - OAuth2-based authorization framework for FHIR applications.
+* **158 FHIR Resources**: All R5 resources generated from official HL7 StructureDefinitions.
+* **Type-Safe API**: Compile-time safety with Go structs matching FHIR specification exactly.
+* **Validation**: Built-in validation for cardinality, mandatory elements, and choice types.
+* **SMART on FHIR**: Support for OAuth2-based authorization flows.
 
 ### HL7 v2 Support
+* **Message Parsing**: Parse ADT, ORM, ORU, and other standard v2.x messages.
+* **Fluent API**: Programmatically build HL7 messages with ease.
+* **MLLP Protocol**: Minimal Lower Layer Protocol for secure message transmission.
 
-Implementation of HL7 Version 2.x messaging standard:
+## 💻 Technology Stack
 
-- **Message Parsing** - Parse HL7 v2.x messages (ADT, ORM, ORU, etc.)
-- **Message Generation** - Build HL7 messages programmatically with a fluent API.
-- **MLLP Protocol** - Minimal Lower Layer Protocol client/server for message transmission.
+* **Language**: Go 1.25+
+* **Standards**: HL7 FHIR R5, HL7 v2.x
+* **Validation**: [go-playground/validator](https://github.com/go-playground/validator)
+* **Testing**: [stretchr/testify](https://github.com/stretchr/testify)
 
-## Installation
+## 📁 Project Structure
+
+```text
+.
+├── cmd/
+│   └── zh-fhir/          # CLI tool for FHIR/HL7 operations
+├── fhir/
+│   ├── r5/               # FHIR R5 resource definitions
+│   │   ├── resources/    # Individual FHIR resources (Patient, etc.)
+│   │   └── types/        # Common FHIR data types
+│   ├── primitives/       # FHIR primitive types (Date, Instant, etc.)
+│   └── validation/       # FHIR resource validation logic
+├── hl7/                  # HL7 v2.x implementation
+├── go.mod                # Go module definition
+└── README.md             # Project documentation
+```
+
+## 🚀 Quick Start Guide
+
+### Installation
 
 ```bash
 go get github.com/zs-health/zh-fhir-go
 ```
 
-## Quick Start
-
-### Working with FHIR R5
+### Usage Example (FHIR R5)
 
 ```go
 package main
 
 import (
-"fmt"
-"github.com/zs-health/zh-fhir-go/fhir/r5"
+    "fmt"
+    "github.com/zs-health/zh-fhir-go/fhir/r5/resources"
 )
 
 func main() {
-patient := &r5.Patient{
-Name: []r5.HumanName{
-{
-Family: "Doe",
-Given:  []string{"John"},
-},
-},
+    patient := &resources.Patient{
+        Active: boolPtr(true),
+        Name: []resources.HumanName{
+            {
+                Family: stringPtr("Doe"),
+                Given:  []string{"John"},
+            },
+        },
+    }
+    fmt.Printf("Created patient: %s\n", *patient.Name[0].Family)
 }
-fmt.Printf("Created patient: %s\n", patient.Name[0].Family)
-}
+
+func stringPtr(s string) *string { return &s }
+func boolPtr(b bool) *bool       { return &b }
 ```
 
-## License
+## 📏 Development Standards
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project follows the **ZARISH HEALTH** development standards:
+* **Naming**: Use `zh-` prefix for all ecosystem components.
+* **Code Style**: Follow standard Go formatting (`gofmt`) and linting.
+* **Documentation**: Maintain clear, concise READMEs and inline comments.
+
+## 📞 Resources & Support
+
+* **Organization**: [Zarish Sphere](https://github.com/zs-health)
+* **Main Platform**: [zh-core](https://github.com/zs-health/zh-core)
+* **Website**: [health.zarishsphere.com](https://health.zarishsphere.com)
+
+---
+© 2026 ZARISH HEALTH. All rights reserved.

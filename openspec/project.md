@@ -2,7 +2,7 @@
 
 ## Purpose
 
-go-radx is a comprehensive Go library for medical imaging and healthcare interoperability standards. The project aims to provide robust, production-ready implementations of FHIR R5, DICOM, HL7 v2.x, and DIMSE networking protocols with a focus on type safety, performance, and developer experience.
+go-zh-fhir is a comprehensive Go library for medical imaging and healthcare interoperability standards. The project aims to provide robust, production-ready implementations of FHIR R5, DICOM, HL7 v2.x, and DIMSE networking protocols with a focus on type safety, performance, and developer experience.
 
 **Primary Goals:**
 - Provide type-safe, idiomatic Go implementations of healthcare standards
@@ -101,7 +101,7 @@ go-radx is a comprehensive Go library for medical imaging and healthcare interop
 
 **Package Structure:**
 ```
-go-radx/
+go-zh-fhir/
 ├── fhir/          # FHIR R5 implementation
 │   ├── r5/        # Generated R5 resources
 │   ├── primitives/# FHIR primitive types
@@ -124,7 +124,7 @@ go-radx/
 │   ├── segment/   # Segment handling
 │   └── mllp/      # MLLP protocol
 └── cmd/           # CLI utilities
-    └── radx/      # Main CLI tool
+    └── zh-fhir/      # Main CLI tool
 ```
 
 **Design Patterns:**
@@ -465,7 +465,7 @@ go test -bench=. ./... # Run benchmarks
 - DICOMweb CLI tool integration
 - HL7 v2.x message parsing
 - MLLP protocol
-- CLI utilities (`radx` command)
+- CLI utilities (`zh-fhir` command)
 
 ### Long-Term (v1.1.0+)
 - SMART on FHIR implementation (OAuth2, app launch, backend services)

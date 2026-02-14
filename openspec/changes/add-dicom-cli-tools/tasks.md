@@ -2,8 +2,8 @@
 
 ## 1. Project Setup
 
-- [ ] 1.1 Create `cmd/radx/` directory structure
-- [ ] 1.2 Initialize `cmd/radx/go.mod` with dependencies
+- [ ] 1.1 Create `cmd/zh-fhir/` directory structure
+- [ ] 1.2 Initialize `cmd/zh-fhir/go.mod` with dependencies
 - [ ] 1.3 Add CLI dependencies to go.mod:
   - [ ] kong for CLI parsing
   - [ ] charmbracelet/* for TUI
@@ -14,18 +14,18 @@
 
 ## 2. Core CLI Infrastructure
 
-- [ ] 2.1 Implement `cmd/radx/main.go` with version injection variables
-- [ ] 2.2 Implement `cmd/radx/internal/build/info.go`:
+- [ ] 2.1 Implement `cmd/zh-fhir/main.go` with version injection variables
+- [ ] 2.2 Implement `cmd/zh-fhir/internal/build/info.go`:
   - [ ] Build info struct with all metadata fields
   - [ ] SetBuildInfo() function
   - [ ] PrintBuildInfo() function
   - [ ] JSON serialization support
-- [ ] 2.3 Implement `cmd/radx/internal/cli/cli.go`:
+- [ ] 2.3 Implement `cmd/zh-fhir/internal/cli/cli.go`:
   - [ ] Kong-based CLI struct with embedded global config
   - [ ] ParseArgs() function returning config and context
   - [ ] Run() function with error handling
   - [ ] Command registration for all DICOM commands
-- [ ] 2.4 Implement `cmd/radx/internal/config/config.go`:
+- [ ] 2.4 Implement `cmd/zh-fhir/internal/config/config.go`:
   - [ ] DicomUtilContext struct with global flags
   - [ ] Version flag handler
   - [ ] Log level configuration
@@ -34,26 +34,26 @@
 
 ## 3. TUI Components
 
-- [ ] 3.1 Implement `cmd/radx/internal/dicom/ui/banner.go`:
+- [ ] 3.1 Implement `cmd/zh-fhir/internal/dicom/ui/banner.go`:
   - [ ] ASCII art generation for "GO RADX DICOM UTIL"
   - [ ] Styled output using lipgloss
   - [ ] Conditional display based on context
-- [ ] 3.2 Implement `cmd/radx/internal/dicom/ui/theme.go`:
-  - [ ] Custom color scheme (matching reference or go-radx branding)
+- [ ] 3.2 Implement `cmd/zh-fhir/internal/dicom/ui/theme.go`:
+  - [ ] Custom color scheme (matching reference or go-zh-fhir branding)
   - [ ] huh.Theme configuration
   - [ ] lipgloss Style definitions
-- [ ] 3.3 Implement `cmd/radx/internal/dicom/ui/progress.go`:
+- [ ] 3.3 Implement `cmd/zh-fhir/internal/dicom/ui/progress.go`:
   - [ ] Progress bar for batch operations
   - [ ] Spinner for long operations
   - [ ] Status messages
-- [ ] 3.4 Implement `cmd/radx/internal/dicom/ui/table.go`:
+- [ ] 3.4 Implement `cmd/zh-fhir/internal/dicom/ui/table.go`:
   - [ ] simpletable wrapper functions
   - [ ] DICOM metadata table rendering
   - [ ] Styled table output
 
 ## 4. Shared Helpers
 
-- [ ] 4.1 Implement `cmd/radx/internal/dicom/commands/helpers.go`:
+- [ ] 4.1 Implement `cmd/zh-fhir/internal/dicom/commands/helpers.go`:
   - [ ] parseDicom() - Parse single DICOM file
   - [ ] listDicomFiles() - Find DICOM files in directory
   - [ ] validateDicomFile() - Validate DICOM file structure
@@ -67,7 +67,7 @@
 
 ## 5. Command: cecho (DICOM Verification)
 
-- [ ] 5.1 Implement `cmd/radx/internal/dicom/commands/cecho.go`:
+- [ ] 5.1 Implement `cmd/zh-fhir/internal/dicom/commands/cecho.go`:
   - [ ] Command struct with Kong tags
   - [ ] Run() method implementation
   - [ ] Connection parameters (host, port, AE titles)
@@ -80,7 +80,7 @@
 
 ## 6. Command: cstore (DICOM Storage)
 
-- [ ] 6.1 Implement `cmd/radx/internal/dicom/commands/cstore.go`:
+- [ ] 6.1 Implement `cmd/zh-fhir/internal/dicom/commands/cstore.go`:
   - [ ] Command struct with file/directory input
   - [ ] Run() method implementation
   - [ ] Connection parameters
@@ -108,7 +108,7 @@
 
 ## 7. Command: dump (DICOM Inspection)
 
-- [ ] 7.1 Implement `cmd/radx/internal/dicom/commands/dump.go`:
+- [ ] 7.1 Implement `cmd/zh-fhir/internal/dicom/commands/dump.go`:
   - [ ] Command struct with file/directory input
   - [ ] Run() method implementation
   - [ ] Output format selection (JSON, table, CSV)
@@ -125,7 +125,7 @@
 
 ## 8. Command: modify (DICOM Modification)
 
-- [ ] 8.1 Implement `cmd/radx/internal/dicom/commands/modify.go`:
+- [ ] 8.1 Implement `cmd/zh-fhir/internal/dicom/commands/modify.go`:
   - [ ] Command struct with file/directory input
   - [ ] Run() method implementation
   - [ ] Tag insertion/update operations
@@ -143,7 +143,7 @@
 
 ## 9. Command: scp (DICOM SCP Server)
 
-- [ ] 9.1 Implement `cmd/radx/internal/dicom/commands/scp.go`:
+- [ ] 9.1 Implement `cmd/zh-fhir/internal/dicom/commands/scp.go`:
   - [ ] Command struct with server configuration
   - [ ] Run() method implementation
   - [ ] Port and AE title configuration
@@ -161,7 +161,7 @@
 
 ## 10. Command: organize (Directory Organization)
 
-- [ ] 10.1 Implement `cmd/radx/internal/dicom/commands/organize.go`:
+- [ ] 10.1 Implement `cmd/zh-fhir/internal/dicom/commands/organize.go`:
   - [ ] Command struct with input/output directories
   - [ ] Run() method implementation
   - [ ] Recursive directory traversal
@@ -185,9 +185,9 @@
   - [ ] Add `clean-cli` target
   - [ ] Set LDFLAGS for version, commit, date injection
 - [ ] 11.2 Update `mise.toml`:
-  - [ ] Add `radx:build` task
-  - [ ] Add `radx:test` task
-  - [ ] Add `radx:install` task
+  - [ ] Add `zh-fhir:build` task
+  - [ ] Add `zh-fhir:test` task
+  - [ ] Add `zh-fhir:install` task
 - [ ] 11.3 Add `.goreleaser.yml` for release automation
 - [ ] 11.4 Test build on multiple platforms (macOS, Linux)
 
@@ -195,7 +195,7 @@
 
 - [ ] 12.1 Create `docs/user-guide/cli/` directory
 - [ ] 12.2 Write `docs/user-guide/cli/overview.md`:
-  - [ ] Introduction to radx DICOM CLI
+  - [ ] Introduction to zh-fhir DICOM CLI
   - [ ] Installation instructions
   - [ ] Common usage patterns
 - [ ] 12.3 Write command-specific guides:

@@ -144,7 +144,7 @@ After generator improvements, regenerate all 202 R5 resource files:
 
 ### Affected Code
 
-**Generator Scripts** (located at `/Users/Andru.Che@annalise.ai/dicom/go-radx/fhir/scripts/gen/`):
+**Generator Scripts** (located at `/Users/Andru.Che@annalise.ai/dicom/go-zh-fhir/fhir/scripts/gen/`):
 - `parser/typemapper.go:44` - Change `"Resource": "any"` → `"Resource": "json.RawMessage"`
 - `parser/typemapper.go:122` - Fix fallback for non-choice polymorphic types
 - `codegen/generator.go:250-272` - Add generated code header comments with metadata

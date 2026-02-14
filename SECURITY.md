@@ -2,7 +2,7 @@
 
 ## Overview
 
-go-radx is healthcare software that may be used in medical device applications or systems handling Protected Health
+go-zh-fhir is healthcare software that may be used in medical device applications or systems handling Protected Health
 Information (PHI). We take security seriously and encourage responsible disclosure of security vulnerabilities.
 
 ## Supported Versions
@@ -24,7 +24,7 @@ previous major version for 12 months after the new major version release.
 
 Instead, please report security vulnerabilities by emailing:
 
-**Security Contact**: security@go-radx.dev *(or create a private security advisory via GitHub)*
+**Security Contact**: security@go-zh-fhir.dev *(or create a private security advisory via GitHub)*
 
 ### What to Include
 
@@ -105,7 +105,7 @@ Please report if you discover any of the following:
 **PHI Protection**:
 - Never log PHI using this library's logging facilities
 - Use DICOM anonymization features before sharing test data
-- Ensure proper access controls on systems using go-radx
+- Ensure proper access controls on systems using go-zh-fhir
 
 **Network Security**:
 - Use TLS for DIMSE connections when possible
@@ -202,7 +202,7 @@ We commit to:
 
 This security policy applies to:
 
-- The go-radx library itself (all packages)
+- The go-zh-fhir library itself (all packages)
 - Official documentation and examples
 - Build and development tooling in this repository
 
@@ -210,7 +210,7 @@ This security policy does **not** apply to:
 
 - Third-party dependencies (report to those projects directly)
 - Forks of this repository (unless maintained by official maintainers)
-- Applications built using go-radx (those are separate projects)
+- Applications built using go-zh-fhir (those are separate projects)
 
 ## Security Features
 
@@ -251,7 +251,7 @@ When processing data of EU residents:
 
 ### Medical Device Software
 
-If using go-radx in medical device software:
+If using go-zh-fhir in medical device software:
 
 - Maintain risk management documentation
 - Implement appropriate validation and verification
@@ -269,14 +269,14 @@ We welcome security audits of this codebase. If you are conducting a security au
 
 ## Contact
 
-- **Security Issues**: security@go-radx.dev
+- **Security Issues**: security@go-zh-fhir.dev
 - **General Questions**: GitHub Discussions
-- **GitHub Security Advisories**: https://github.com/codeninja55/go-radx/security/advisories
+- **GitHub Security Advisories**: https://github.com/codeninja55/go-zh-fhir/security/advisories
 
 ## Acknowledgments
 
 We thank all security researchers who have responsibly disclosed vulnerabilities to us. Your contributions help make
-go-radx safer for the healthcare community.
+go-zh-fhir safer for the healthcare community.
 
 ## Updates to This Policy
 

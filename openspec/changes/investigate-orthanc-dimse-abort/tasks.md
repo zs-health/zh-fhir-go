@@ -54,7 +54,7 @@
 
 - [ ] 6.1 Set up pynetdicom test scripts for same operations
 - [ ] 6.2 Capture Wireshark packets from successful pynetdicom operations
-- [ ] 6.3 Perform side-by-side PDU comparison (go-radx vs pynetdicom)
+- [ ] 6.3 Perform side-by-side PDU comparison (go-zh-fhir vs pynetdicom)
 - [ ] 6.4 Document all structural differences in PDU encoding
 - [ ] 6.5 Identify protocol behavior differences
 - [ ] 6.6 Create detailed comparison report

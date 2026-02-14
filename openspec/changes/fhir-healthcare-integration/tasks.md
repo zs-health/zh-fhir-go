@@ -23,7 +23,7 @@ user-visible progress. Dependencies clearly marked. Estimated timeline: ~13 week
   - Write package-level godoc in `doc.go` with examples
   - Document common use cases and patterns
   - Add links to DICOM/FHIR specs
-  - **Validation**: `go doc github.com/codeninja55/go-radx/fhir/mapping` shows docs
+  - **Validation**: `go doc github.com/codeninja55/go-zh-fhir/fhir/mapping` shows docs
   - **Time**: 1 hour
 
 ### 1.2 Patient Mapping

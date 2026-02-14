@@ -269,4 +269,4 @@ Abstract resources (like `Resource`, `DomainResource`) are intentionally skipped
 
 ## License
 
-This generator is part of the go-radx project. See the main project LICENSE file.
+This generator is part of the go-zh-fhir project. See the main project LICENSE file.

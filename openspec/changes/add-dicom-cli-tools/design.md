@@ -2,9 +2,9 @@
 
 ## Context
 
-The go-radx library provides comprehensive DICOM and DIMSE networking capabilities as Go packages, but lacks
+The go-zh-fhir library provides comprehensive DICOM and DIMSE networking capabilities as Go packages, but lacks
 user-facing CLI tools. This design document outlines the technical architecture, patterns, and implementation decisions
-for adding a complete DICOM utility CLI as a subcommand of the main `radx` tool.
+for adding a complete DICOM utility CLI as a subcommand of the main `zh-fhir` tool.
 
 **Background:**
 - Existing DICOM core in `dicom/` package (parsing, writing, datasets)
@@ -13,17 +13,17 @@ for adding a complete DICOM utility CLI as a subcommand of the main `radx` tool.
 - Target users: PACS administrators, radiology engineers, healthcare software developers
 
 **Constraints:**
-- Must follow go-radx project conventions (KISS, YAGNI, SOLID, 12-Factor App)
+- Must follow go-zh-fhir project conventions (KISS, YAGNI, SOLID, 12-Factor App)
 - Native Go implementation (no external binary dependencies)
 - Cross-platform support (macOS, Linux, Windows/WSL2)
-- Must integrate cleanly with existing go-radx packages
+- Must integrate cleanly with existing go-zh-fhir packages
 - No breaking changes to existing dicom or dimse packages
 
 **Stakeholders:**
 - Healthcare software developers (primary users)
 - PACS administrators (operations and troubleshooting)
 - Radiology workflow engineers (automation and integration)
-- go-radx library maintainers (code quality and patterns)
+- go-zh-fhir library maintainers (code quality and patterns)
 
 ## Goals / Non-Goals
 
@@ -98,7 +98,7 @@ LDFLAGS := -s -w \
   -X main.Date=$(BUILD_DATE)
 
 build:
-	CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o bin/radx ./cmd/radx
+	CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o bin/zh-fhir ./cmd/zh-fhir
 ```
 
 ### 3. TUI Libraries: Charmbracelet Ecosystem
@@ -223,9 +223,9 @@ func RenderMetadata(meta []DicomMetadata, format OutputFormat) error {
 **Rationale:**
 - No external binary dependencies (pure Go)
 - Better error handling and validation
-- Consistent with go-radx philosophy
+- Consistent with go-zh-fhir philosophy
 - Cross-platform without DCMTK installation
-- Can leverage existing go-radx dicom.DataSet API
+- Can leverage existing go-zh-fhir dicom.DataSet API
 - Easier to extend with custom operations
 
 **Operations Supported:**
@@ -355,7 +355,7 @@ func (c *CStoreCmd) createRateLimiter() *rate.Limiter {
 ### Directory Structure
 
 ```
-cmd/radx/
+cmd/zh-fhir/
 ├── main.go                          # Entry point
 ├── go.mod                           # CLI dependencies
 ├── internal/
@@ -402,7 +402,7 @@ ui.PrintBanner()
   ↓
 helpers.listDicomFiles(path)
   ↓
-dicom.ParseFile() (go-radx package)
+dicom.ParseFile() (go-zh-fhir package)
   ↓
 helpers.formatDicomValue()
   ↓
@@ -415,7 +415,7 @@ CStoreCmd.Run()
   ↓
 ui.PrintBanner()
   ↓
-dimse.NewClient() (go-radx package)
+dimse.NewClient() (go-zh-fhir package)
   ↓
 client.Associate()
   ↓
@@ -607,5 +607,5 @@ func (s *SCPServer) Run(ctx context.Context) error {
 4. **Q:** Should rate limiting apply to the entire batch or per-file?
    **A:** Per-file for simplicity. Can enhance to support bandwidth-based limiting in future.
 
-5. **Q:** Should we create separate binaries for each command or single radx CLI?
-   **A:** Single radx CLI with subcommands for better UX and maintenance.
+5. **Q:** Should we create separate binaries for each command or single zh-fhir CLI?
+   **A:** Single zh-fhir CLI with subcommands for better UX and maintenance.

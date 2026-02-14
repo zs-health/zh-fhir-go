@@ -1,4 +1,4 @@
-# GoReleaser configuration for radx CLI
+# GoReleaser configuration for zh-fhir CLI
 # See: https://goreleaser.com
 #
 # This configuration uses prebuilt binaries from GitHub Actions native runners
@@ -7,7 +7,7 @@
 version: 2
 
 # Project metadata
-project_name: radx
+project_name: zh-fhir
 
 # Use prebuilt binaries - skip building
 builds:
@@ -15,7 +15,7 @@ builds:
 
 # Archive configuration - package prebuilt binaries from dist/
 archives:
-  - id: radx
+  - id: zh-fhir
     format: tar.gz
     name_template: >-
       {{ .ProjectName }}_
@@ -25,7 +25,7 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
 
     # Use prebuilt binaries from dist/ directory
-    # The workflow prepares: dist/radx_linux_amd64/radx and dist/radx_linux_arm64/radx
+    # The workflow prepares: dist/zh-fhir_linux_amd64/zh-fhir and dist/zh-fhir_linux_arm64/zh-fhir
     files:
       - LICENSE*
       - README*
@@ -75,7 +75,7 @@ changelog:
 release:
   github:
     owner: codeninja55
-    name: go-radx
+    name: go-zh-fhir
 
   draft: false
   prerelease: auto
@@ -101,39 +101,39 @@ release:
 
     #### Linux (x86-64)
     ```bash
-    curl -LO https://github.com/codeninja55/go-radx/releases/download/{{ .Tag }}/radx_{{ .Version }}_linux_amd64.tar.gz
-    tar -xzf radx_{{ .Version }}_linux_amd64.tar.gz
-    sudo mv radx /usr/local/bin/
+    curl -LO https://github.com/codeninja55/go-zh-fhir/releases/download/{{ .Tag }}/zh-fhir_{{ .Version }}_linux_amd64.tar.gz
+    tar -xzf zh-fhir_{{ .Version }}_linux_amd64.tar.gz
+    sudo mv zh-fhir /usr/local/bin/
     ```
 
     #### Linux (ARM64)
     ```bash
-    curl -LO https://github.com/codeninja55/go-radx/releases/download/{{ .Tag }}/radx_{{ .Version }}_linux_arm64.tar.gz
-    tar -xzf radx_{{ .Version }}_linux_arm64.tar.gz
-    sudo mv radx /usr/local/bin/
+    curl -LO https://github.com/codeninja55/go-zh-fhir/releases/download/{{ .Tag }}/zh-fhir_{{ .Version }}_linux_arm64.tar.gz
+    tar -xzf zh-fhir_{{ .Version }}_linux_arm64.tar.gz
+    sudo mv zh-fhir /usr/local/bin/
     ```
 
     ### Verify Installation
     ```bash
-    radx --version
+    zh-fhir --version
     ```
 
   footer: |
-    **Full Changelog**: https://github.com/codeninja55/go-radx/compare/{{ .PreviousTag }}...{{ .Tag }}
+    **Full Changelog**: https://github.com/codeninja55/go-zh-fhir/compare/{{ .PreviousTag }}...{{ .Tag }}
 
 # Homebrew tap (optional - for future use)
 # Uncomment when ready to publish to Homebrew
 # brews:
-#   - name: radx
+#   - name: zh-fhir
 #     repository:
 #       owner: codeninja55
 #       name: homebrew-tap
 #     folder: Formula
-#     homepage: https://github.com/codeninja55/go-radx
-#     description: "DICOM utility CLI for go-radx"
+#     homepage: https://github.com/codeninja55/go-zh-fhir
+#     description: "DICOM utility CLI for go-zh-fhir"
 #     license: MIT
 #     test: |
-#       system "#{bin}/radx --version"
+#       system "#{bin}/zh-fhir --version"
 
 # Announce to various platforms (optional)
 # announce:

@@ -130,7 +130,7 @@ The Abort PDU and timeout errors likely stem from subtle protocol violations in:
    └── pynetdicom for reference
 
 2. For each failing operation (C-STORE, C-FIND, C-GET, C-MOVE, SCP):
-   ├── Reproduce failure with go-radx
+   ├── Reproduce failure with go-zh-fhir
    ├── Capture packet trace
    ├── Extract Orthanc logs
    ├── Perform same operation with pynetdicom

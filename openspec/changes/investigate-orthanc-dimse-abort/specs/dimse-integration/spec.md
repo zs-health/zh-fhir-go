@@ -84,7 +84,7 @@ specification.
 
 - **WHEN** negotiated transfer syntax differs from dataset encoding
 - **THEN** PACS server SHALL reject operation with Abort PDU or error status
-- **AND** go-radx SHALL detect and report the rejection
+- **AND** go-zh-fhir SHALL detect and report the rejection
 - **AND** error message SHALL indicate transfer syntax mismatch
 
 ### Requirement: PDU Structure Compliance
@@ -124,7 +124,7 @@ The DIMSE implementation SHALL provide clear diagnostics when protocol errors oc
 #### Scenario: Abort PDU received from Orthanc
 
 - **WHEN** Orthanc sends A-ABORT PDU
-- **THEN** go-radx SHALL capture abort reason and source
+- **THEN** go-zh-fhir SHALL capture abort reason and source
 - **AND** error message SHALL include abort reason code
 - **AND** error message SHALL include abort source (UL service-user or service-provider)
 - **AND** operation SHALL fail gracefully without panic

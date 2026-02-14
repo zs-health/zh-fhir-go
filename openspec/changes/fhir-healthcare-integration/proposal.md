@@ -2,7 +2,7 @@
 
 ## Why
 
-The current go-radx implementation provides complete FHIR R4/R5 resources (304 total) and comprehensive DICOM core
+The current go-zh-fhir implementation provides complete FHIR R4/R5 resources (304 total) and comprehensive DICOM core
 with DIMSE networking, but lacks **critical healthcare interoperability features** needed for production healthcare
 systems and clinical workflows:
 
@@ -21,7 +21,7 @@ systems and clinical workflows:
    inefficient architectures and preventing event-driven clinical workflows (e.g., "notify when urgent imaging study
    arrives").
 
-These gaps prevent go-radx from being production-ready for:
+These gaps prevent go-zh-fhir from being production-ready for:
 - **Harrison Open Platform integration** - Needs DICOM→FHIR conversion for orchestrating AI workflows
 - **Annalise Container deployment** - Requires SMART authorization for secure multi-tenant access
 - **US healthcare market** - Mandates US Core compliance for EHR integration
@@ -200,8 +200,8 @@ fhir/subscriptions/webhook_test.go        (~200 lines)
 
 1. **DICOM Conversion CLI** (optional):
    ```bash
-   radx dicom to-fhir study.dcm --output imagingstudy.json
-   radx fhir to-dicom diagnosticreport.json --template TID1500 --output sr.dcm
+   zh-fhir dicom to-fhir study.dcm --output imagingstudy.json
+   zh-fhir fhir to-dicom diagnosticreport.json --template TID1500 --output sr.dcm
    ```
 
 2. **SMART Authorization Helpers**:
@@ -211,8 +211,8 @@ fhir/subscriptions/webhook_test.go        (~200 lines)
 
 3. **US Core Validation CLI** (optional):
    ```bash
-   radx fhir validate --profile us-core-patient patient.json
-   radx fhir check-mustsupport --profile us-core-observation obs.json
+   zh-fhir fhir validate --profile us-core-patient patient.json
+   zh-fhir fhir check-mustsupport --profile us-core-observation obs.json
    ```
 
 4. **Subscription Management**:
@@ -256,10 +256,10 @@ fhir/subscriptions/webhook_test.go        (~200 lines)
 1. Existing code continues to work unchanged
 2. New features require explicit imports:
    ```go
-   import "github.com/codeninja55/go-radx/fhir/mapping"
-   import "github.com/codeninja55/go-radx/fhir/smart"
-   import "github.com/codeninja55/go-radx/fhir/ig/uscore"
-   import "github.com/codeninja55/go-radx/fhir/subscriptions"
+   import "github.com/codeninja55/go-zh-fhir/fhir/mapping"
+   import "github.com/codeninja55/go-zh-fhir/fhir/smart"
+   import "github.com/codeninja55/go-zh-fhir/fhir/ig/uscore"
+   import "github.com/codeninja55/go-zh-fhir/fhir/subscriptions"
    ```
 3. Incremental adoption supported (use only features you need)
 

@@ -196,7 +196,7 @@ opts := MappingOptions{
 
 **Then** the ImagingStudy includes:
 - `meta.source` = `"urn:dicom:sop:1.2.840..."`
-- `extension` with URL `"http://go-radx.dev/fhir/StructureDefinition/dicom-mapping"`
+- `extension` with URL `"http://go-zh-fhir.dev/fhir/StructureDefinition/dicom-mapping"`
 - Extension contains:
   - Mapping timestamp
   - Mapping library version

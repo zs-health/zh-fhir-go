@@ -1,6 +1,6 @@
 # FHIR Summary Mode
 
-This document explains FHIR summary mode and its implementation in go-radx.
+This document explains FHIR summary mode and its implementation in go-zh-fhir.
 
 ## Overview
 
@@ -55,7 +55,7 @@ Returns all fields. Equivalent to standard `json.Marshal()`.
 ### Basic Summary Marshaling
 
 ```go
-import "github.com/codeninja55/go-radx/fhir"
+import "github.com/codeninja55/go-zh-fhir/fhir"
 
 patient := &Patient{
     ID:                  stringPtr("example"),
