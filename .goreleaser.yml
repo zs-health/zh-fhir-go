@@ -1,0 +1,140 @@
+# GoReleaser configuration for radx CLI
+# See: https://goreleaser.com
+#
+# This configuration uses prebuilt binaries from GitHub Actions native runners
+# instead of cross-compilation to avoid CGO dependency issues.
+
+version: 2
+
+# Project metadata
+project_name: radx
+
+# Use prebuilt binaries - skip building
+builds:
+  - skip: true
+
+# Archive configuration - package prebuilt binaries from dist/
+archives:
+  - id: radx
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- .Arch }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
+    # Use prebuilt binaries from dist/ directory
+    # The workflow prepares: dist/radx_linux_amd64/radx and dist/radx_linux_arm64/radx
+    files:
+      - LICENSE*
+      - README*
+      - CHANGELOG*
+
+# Checksum configuration
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  algorithm: sha256
+
+# Snapshot configuration (for non-tagged builds)
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+# Changelog configuration
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - '^build:'
+      - 'merge conflict'
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+  groups:
+    - title: 'New Features'
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: 'Bug Fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: 'Performance Improvements'
+      regexp: '^.*?perf(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: 'Refactors'
+      regexp: '^.*?refactor(\([[:word:]]+\))??!?:.+$'
+      order: 3
+    - title: 'Other Changes'
+      order: 999
+
+# Release configuration
+release:
+  github:
+    owner: codeninja55
+    name: go-radx
+
+  draft: false
+  prerelease: auto
+  mode: replace
+
+  # Release notes
+  header: |
+    ## RadX DICOM Utility CLI {{ .Tag }}
+
+    Release date: {{ .Date }}
+
+    ### Important Note
+
+    This release includes binaries with CGO support for JPEG and JPEG 2000 decompression.
+    If you encounter issues with image decompression, ensure you have the required libraries installed:
+
+    - **macOS**: `brew install jpeg-turbo openjpeg`
+    - **Linux**: `sudo apt-get install libjpeg-turbo8 libopenjp2-7`
+
+    ### Installation
+
+    Download the appropriate binary for your platform below and extract it to a location in your PATH.
+
+    #### Linux (x86-64)
+    ```bash
+    curl -LO https://github.com/codeninja55/go-radx/releases/download/{{ .Tag }}/radx_{{ .Version }}_linux_amd64.tar.gz
+    tar -xzf radx_{{ .Version }}_linux_amd64.tar.gz
+    sudo mv radx /usr/local/bin/
+    ```
+
+    #### Linux (ARM64)
+    ```bash
+    curl -LO https://github.com/codeninja55/go-radx/releases/download/{{ .Tag }}/radx_{{ .Version }}_linux_arm64.tar.gz
+    tar -xzf radx_{{ .Version }}_linux_arm64.tar.gz
+    sudo mv radx /usr/local/bin/
+    ```
+
+    ### Verify Installation
+    ```bash
+    radx --version
+    ```
+
+  footer: |
+    **Full Changelog**: https://github.com/codeninja55/go-radx/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+# Homebrew tap (optional - for future use)
+# Uncomment when ready to publish to Homebrew
+# brews:
+#   - name: radx
+#     repository:
+#       owner: codeninja55
+#       name: homebrew-tap
+#     folder: Formula
+#     homepage: https://github.com/codeninja55/go-radx
+#     description: "DICOM utility CLI for go-radx"
+#     license: MIT
+#     test: |
+#       system "#{bin}/radx --version"
+
+# Announce to various platforms (optional)
+# announce:
+#   skip: '{{gt .Patch 0}}'
