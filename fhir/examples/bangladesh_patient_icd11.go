@@ -25,7 +25,7 @@ func BangladeshPatientExample() {
 	// In a real scenario, this would be attached to an Encounter or Condition
 	// Here we just print the result
 	fmt.Printf("Created Bangladesh Patient: %s\n", *patient.ID)
-	fmt.Printf("Diagnosis: %s (%s)\n", *diagnosis.Text, diagnosis.Coding[0].Code)
+	fmt.Printf("Diagnosis: %s (%s)\n", *diagnosis.Text, *diagnosis.Coding[0].Code)
 }
 
 func stringPtrBD(s string) *string {
