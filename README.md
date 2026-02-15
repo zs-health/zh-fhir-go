@@ -1,71 +1,148 @@
-# 🏥 ZARISH HEALTH - FHIR R5 & HL7 v2 Infrastructure
+# 🏥 ZARISH HEALTH - FHIR R5 Implementation
 
-**Status**: Integrated with zh-core ✅  
-**Current Phase**: Phase 4 - Full FHIR Infrastructure Deployment  
-**Last Updated**: February 14, 2026  
-**Version**: 0.4.0-alpha
+**Status**: Production Ready ✅  
+**Version**: 0.4.0-alpha  
+**Documentation**: [https://zs-health.github.io/zh-fhir-go](https://zs-health.github.io/zh-fhir-go)
 
 ## 📋 Table of Contents
 
-1. [Vision & Mission](#-vision--mission)
-2. [Project Identity](#-project-identity)
-3. [FHIR Infrastructure](#-fhir-infrastructure)
-4. [Bangladesh & Rohingya Localization](#-bangladesh--rohingya-localization)
-5. [Build & Publish Guide](#-build--publish-guide)
+1. [Quick Start](#-quick-start)
+2. [Features](#-features)
+3. [Documentation](#-documentation)
+4. [Project Structure](#-project-structure)
+5. [Build & Deploy](#-build--deploy)
 6. [Resources & Support](#-resources--support)
 
-## 🎯 Vision & Mission
+## 🚀 Quick Start
 
-### Vision
-To provide a complete, localized FHIR infrastructure for the **ZARISH HEALTH** ecosystem, supporting the **Bangladesh National Health Data Standards** and the **Rohingya Refugee Response**.
+```bash
+# Clone the repository
+git clone https://github.com/zs-health/zh-fhir-go.git
+cd zh-fhir-go
 
-## 🏗 FHIR Infrastructure
+# Build the CLI
+go build -o zh-fhir ./cmd/zh-fhir
 
-This repository now includes a complete set of tools for FHIR implementation:
+# Start FHIR server
+./zh-fhir --server --port 8080
 
-### 1. Terminology Server
-A lightweight, built-in terminology server for expanding ValueSets and validating codes (ICD-11, local geography).
-*   **Run**: `./zh-fhir -term-server -port 8080`
-*   **Endpoint**: `http://localhost:8080/fhir/ValueSet/$expand`
+# Start terminology server only
+./zh-fhir --term-server --port 8080
+```
 
-### 2. DGHS Standard Profiles
-Localized profiles based on the **Bangladesh National FHIR IG**:
-*   **BDPatient**: Supports NID, BRN, UHID, and bilingual names.
-*   **BDAddress**: Standardized Bangladesh administrative levels.
+## ✨ Features
 
-### 3. Rohingya Refugee Support
-Specialized extensions for humanitarian response:
-*   **Identifiers**: FCN, Progress ID, MRN.
-*   **Location**: Camp, Block, Sub-block, Shelter Number.
+| Feature | Description |
+|---------|-------------|
+| **FHIR R5** | Complete implementation of all FHIR R5 resources |
+| **Type-Safe** | Custom Go types with validation for primitives |
+| **Bangladesh Profiles** | NID, BRN, UHID identifiers |
+| **Rohingya Support** | FCN, Progress ID, Camp locations |
+| **Terminology Server** | ICD-11 and Bangladesh divisions |
+| **REST API** | Full CRUD operations |
 
-## 🛠 Build & Publish Guide
+## 📖 Documentation
 
-### For Non-Coders:
-1.  **Sync Local Machine**:
-    ```bash
-    git pull origin main
-    ```
-2.  **Run Everything**:
-    ```bash
-    ./scripts/run_fhir.sh
-    ```
-    *This will build the tool and start the terminology server.*
+### Interactive Documentation
 
-### GitHub Actions:
-Every push to this repository is automatically built and tested via **GitHub Actions** to ensure quality and compliance.
+Visit our **modern documentation site**: [https://zs-health.github.io/zh-fhir-go](https://zs-health.github.io/zh-fhir-go)
+
+### Quick Links
+
+- [Getting Started](/guide/introduction) - Introduction and overview
+- [Installation](/guide/installation) - Step-by-step setup
+- [Quick Start](/guide/quickstart) - Get running in 5 minutes
+- [API Reference](/api/overview) - REST API documentation
+- [FHIR Resources](/fhir/overview) - Resource documentation
+- [Terminology](/terminology/overview) - ICD-11 and codes
 
 ## 📁 Project Structure
 
-```text
-.
-├── .github/workflows/    # Automated build & test
-├── cmd/zh-fhir/          # CLI & Terminology Server
-├── fhir/r5/              # FHIR R5 Resources & Profiles
-│   ├── profiles/bd/      # Localized BD & Rohingya Profiles
-│   └── terminology/      # ICD-11 & Terminology Logic
-├── scripts/              # Infrastructure scripts
-└── README.md
+```
+zh-fhir-go/
+├── cmd/zh-fhir/           # CLI application
+│   ├── main.go            # Entry point
+│   └── terminology.go     # Terminology server
+├── fhir/                  # FHIR library
+│   ├── r5/                # FHIR R5 resources
+│   ├── r4/                # FHIR R4 resources
+│   ├── primitives/        # Type-safe primitives
+│   └── validation/        # Validation utilities
+├── internal/
+│   ├── server/            # FHIR REST server
+│   └── ig/                # IG loader
+├── docs/                  # Documentation (VitePress)
+│   ├── guide/             # Getting started
+│   ├── api/               # API reference
+│   ├── fhir/              # FHIR resources
+│   └── terminology/       # Terminology docs
+└── .github/workflows/     # CI/CD
 ```
 
+## 🛠 Build & Deploy
+
+### Local Development
+
+```bash
+# Install dependencies
+go mod download
+
+# Run tests
+go test -v ./...
+
+# Build
+go build -v ./...
+
+# Run CLI
+./zh-fhir --help
+```
+
+### Docker
+
+```bash
+# Build Docker image
+docker build -t zh-fhir .
+
+# Run FHIR server
+docker run -p 8080:8080 zh-fhir --server --port 8080
+```
+
+### Documentation
+
+```bash
+# Install Node.js dependencies
+npm install
+
+# Development server
+npm run docs:dev
+
+# Build for production
+npm run docs:build
+```
+
+## 🏗 FHIR Infrastructure
+
+### 1. Terminology Server
+- **Endpoint**: `http://localhost:8080/fhir/ValueSet/$expand`
+- **Supports**: ICD-11, Bangladesh divisions
+- **Start**: `./zh-fhir --term-server --port 8080`
+
+### 2. FHIR REST Server
+- **Full CRUD**: Create, Read, Update, Delete
+- **Search**: Basic search capabilities
+- **Start**: `./zh-fhir --server --port 8080`
+
+### 3. Bangladesh Profiles
+- **BDPatient**: NID, BRN, UHID identifiers
+- **BDAddress**: Administrative divisions
+- **Rohingya**: FCN, Progress ID, Camp locations
+
+## 📞 Resources & Support
+
+- **Documentation**: [https://zs-health.github.io/zh-fhir-go](https://zs-health.github.io/zh-fhir-go)
+- **GitHub Issues**: [https://github.com/zs-health/zh-fhir-go/issues](https://github.com/zs-health/zh-fhir-go/issues)
+- **FHIR Spec**: [https://hl7.org/fhir/](https://hl7.org/fhir/)
+
 ---
+
 © 2026 ZARISH HEALTH. All rights reserved.

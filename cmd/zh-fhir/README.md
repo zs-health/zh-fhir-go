@@ -1,157 +1,150 @@
-# go-zh-fhir
+# zh-fhir CLI
 
-[![Go Version](https://img.shields.io/badge/go-1.23+-blue.svg)](https://golang.org/dl/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-
-A comprehensive Go library and CLI toolkit for working with DICOM (Digital Imaging and Communications in Medicine) files,
-implementing native DICOM parsing, DIMSE protocol support, and powerful utilities for medical imaging workflows.
+A comprehensive FHIR R5 implementation with Bangladesh and Rohingya localization, terminology services, and a full RESTful FHIR server.
 
 ## Features
 
-### Core Library (`github.com/codeninja55/go-zh-fhir`)
+### Core Library (`github.com/zs-health/zh-fhir-go/fhir`)
 
-- **Native DICOM Parsing**: Pure Go implementation without C dependencies
-- **DIMSE Protocol**: Full support for DICOM network operations (C-ECHO, C-STORE, C-FIND, C-MOVE)
-- **Transfer Syntax Support**: Multiple encodings including JPEG 2000, JPEG Lossless
-- **Tag Dictionary**: Complete DICOM data dictionary with 6000+ standard tags
-- **Value Representations**: Full support for all DICOM VRs (Value Representations)
-- **Pixel Data Handling**: Native pixel data extraction and processing
-- **SCP/SCU**: Both Service Class Provider and Service Class User implementations
+- **Complete FHIR R5 Support**: All resources and types
+- **Type-Safe Primitives**: Custom Date, DateTime, Time, and Instant types with validation
+- **Standards Compliant**: Generated from official FHIR StructureDefinitions
+- **JSON Support**: Full marshaling/unmarshaling with `encoding/json`
+- **Bangladesh Profiles**: Localized BDPatient, BDAddress with NID, BRN, UHID support
+- **Rohingya Support**: FCN, Progress ID, MRN identifiers and Camp location extensions
 
-### RadX CLI (`cmd/zh-fhir`)
+### CLI Tool (`cmd/zh-fhir`)
 
-A powerful command-line tool for DICOM file manipulation and analysis:
+A command-line tool for FHIR operations:
 
 | Command | Description |
 |---------|-------------|
-| **dump** | Inspect DICOM file contents with tag filtering |
-| **echo** | Verify DICOM connectivity (C-ECHO SCU) |
-| **store** | Send files to PACS (C-STORE SCU) with rate limiting |
-| **modify** | Modify DICOM tags and regenerate UIDs |
-| **organize** | Reorganize files by Study/Series/Instance hierarchy |
-| **scp** | Run DICOM SCP server (C-ECHO and C-STORE) |
-| **lookup** | Look up DICOM tag information |
-| **catalogue** | Build and query SQLite database of DICOM metadata |
+| `--server` | Start the full FHIR REST server |
+| `--term-server` | Start the terminology server |
 
-## Quick Start
+### FHIR Server
 
-### Installation
+- **RESTful API**: Full CRUD operations (Create, Read, Update, Delete)
+- **Search**: Basic search capabilities
+- **Terminology Service**: ValueSet/$expand operation
+- **ICD-11 Support**: WHO ICD-11 codes included
+- **Bangladesh Geography**: Division, District, Upazila codes
+
+## Installation
 
 ```bash
 # Install from source
-git clone https://github.com/codeninja55/go-zh-fhir.git
-cd go-zh-fhir/cmd/zh-fhir
-go install
+git clone https://github.com/zs-health/zh-fhir-go.git
+cd zh-fhir-go
 
-# Or build manually
-go build -o zh-fhir .
+# Build
+go build -o zh-fhir ./cmd/zh-fhir
+
+# Or install
+go install ./cmd/zh-fhir
 ```
 
-### Basic Usage
+## Quick Start
+
+### Start the FHIR Server
 
 ```bash
-# Inspect a DICOM file
-zh-fhir dicom dump file.dcm
+# Start full FHIR server on port 8080
+./zh-fhir --server --port 8080
 
-# Test PACS connectivity
-zh-fhir dicom echo --host pacs.example.com --port 11112
-
-# Send files to PACS with rate limiting
-zh-fhir dicom store --dir /data/dicom --host pacs.example.com --rate-limit 10
-
-# Build a searchable database
-zh-fhir dicom catalogue /data/dicom --database archive.db
-
-# Query the database
-zh-fhir dicom catalogue --database archive.db -q "Modality=CT"
-zh-fhir dicom catalogue --database archive.db --sql "SELECT patient_name, COUNT(*) FROM dicom_metadata GROUP BY patient_name"
+# Start terminology server only
+./zh-fhir --term-server --port 8080
 ```
+
+### Start with Custom IG
+
+```bash
+./zh-fhir --server --port 8080 --ig ./BD-Core-FHIR-IG
+```
+
+## FHIR Server Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/fhir` | Server metadata (CapabilityStatement) |
+| POST | `/fhir/{resourceType}` | Create resource |
+| GET | `/fhir/{resourceType}` | Search resources |
+| GET | `/fhir/{resourceType}/{id}` | Read resource |
+| PUT | `/fhir/{resourceType}/{id}` | Update resource |
+| DELETE | `/fhir/{resourceType}/{id}` | Delete resource |
+| GET | `/fhir/ValueSet/$expand?url={system}` | Expand ValueSet |
+
+## Example Usage
+
+### Create a Patient
+
+```bash
+curl -X POST http://localhost:8080/fhir/Patient \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Patient",
+    "id": "example",
+    "active": true,
+    "name": [{
+      "family": "Mia",
+      "given": ["Chowdhury"]
+    }],
+    "gender": "female"
+  }'
+```
+
+### Search for Patients
+
+```bash
+curl http://localhost:8080/fhir/Patient
+```
+
+### Expand a ValueSet
+
+```bash
+curl "http://localhost:8080/fhir/ValueSet/\$expand?url=http://id.who.int/icd/release/11/mms"
+```
+
+## Configuration
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--server` | false | Start full FHIR server |
+| `--term-server` | false | Start terminology server only |
+| `--port` | 8080 | Server port |
+| `--ig` | `./BD-Core-FHIR-IG` | Path to FHIR Implementation Guide |
+
+## Bangladesh-Specific Features
+
+### Supported Identifiers
+
+- **NID**: National ID
+- **BRN**: Birth Registration Number
+- **UHID**: Unique Health ID
+- **FCN**: Family Counting Number (Rohingya)
+- **Progress ID**: Refugee Progress ID
+- **MRN**: Medical Record Number
+
+### Administrative Divisions
+
+- Division (e.g., Dhaka, Chattogram)
+- District
+- Upazila
+- Union
+- Ward
+- Village
 
 ## Documentation
 
-- **CLI Documentation**: See [docs/zh-fhir/](../../docs/zh-fhir/) for detailed command documentation
-  - [dump](../../docs/zh-fhir/dump.md) - Inspect DICOM file contents
-  - [echo](../../docs/zh-fhir/echo.md) - Verify DICOM connectivity (C-ECHO)
-  - [store](../../docs/zh-fhir/store.md) - Send files to PACS (C-STORE)
-  - [modify](../../docs/zh-fhir/modify.md) - Modify DICOM tags and UIDs
-  - [organize](../../docs/zh-fhir/organize.md) - Reorganize files by Study/Series/Instance
-  - [scp](../../docs/zh-fhir/scp.md) - Run DICOM SCP server
-  - [catalogue](../../docs/zh-fhir/catalogue.md) - Build SQLite database of metadata
-  - [lookup](../../docs/zh-fhir/lookup.md) - Look up DICOM tag information
-- **API Documentation**: Run `go doc github.com/codeninja55/go-zh-fhir/dicom`
-
-## Key Features
-
-### 1. Tag Filtering (dump command)
-
-```bash
-# Filter by tag ID, hex code, or keyword
-zh-fhir dicom dump file.dcm --tag PatientName --tag "(0010,0020)" --tag 00080060
-
-# Common filters
-zh-fhir dicom dump file.dcm -t PatientName -t PatientID -t StudyDate -t Modality
-```
-
-### 2. SQLite Catalogue with SQL Queries
-
-```bash
-# Index DICOM files
-zh-fhir dicom catalogue /data/dicom --database my-archive.db
-
-# Keyword queries
-zh-fhir dicom catalogue --database my-archive.db -q "PatientID=12345"
-
-# Raw SQL queries (safe, SELECT-only)
-zh-fhir dicom catalogue --database my-archive.db --sql "
-  SELECT modality, COUNT(*) as count, AVG(file_size) as avg_size
-  FROM dicom_metadata
-  GROUP BY modality
-  ORDER BY count DESC"
-```
-
-### 3. DICOM Network Operations
-
-```bash
-# C-ECHO verification
-zh-fhir dicom echo --host pacs.example.com --port 11112
-
-# C-STORE with rate limiting
-zh-fhir dicom store --dir /data/to-send \
-  --host pacs.example.com \
-  --rate-limit 10 \
-  --rate-limit-bytes 5.0
-
-# Run SCP server
-zh-fhir dicom scp --port 11112 --output-dir /received \
-  --accept-echo \
-  --auto-organize
-```
-
-## Safety and Security
-
-### SQL Query Safety
-
-The catalogue command implements multiple safety layers for SQL queries:
-
-1. **SELECT-only**: Only SELECT statements are permitted
-2. **Keyword filtering**: Blocks dangerous keywords (DROP, DELETE, INSERT, UPDATE, etc.)
-3. **Result limiting**: Maximum 1000 rows returned
-4. **No destructive operations**: Database is read-only for SQL queries
-
-## Recent Additions
-
-- ✅ Tag filtering in dump command
-- ✅ SQL query support in catalogue command
-- ✅ Tag lookup command with built-in dictionary
-- ✅ Enhanced rate limiting (files/sec and MB/sec)
-- ✅ SCP server with auto-organize
-- ✅ Comprehensive CLI documentation
+- [FHIR Library Documentation](../fhir/README.md)
+- [API Reference](./api.md)
+- [Terminology Server](./terminology.md)
+- [Bangladesh Profiles](./profiles.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see LICENSE file for details.
 
 ## Support
 
-- **Documentation**: [docs/zh-fhir/](docs/zh-fhir/)
-- **Issues**: [GitHub Issues](https://github.com/codeninja55/go-zh-fhir/issues)
+- GitHub Issues: https://github.com/zs-health/zh-fhir-go/issues
