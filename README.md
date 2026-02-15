@@ -1,109 +1,107 @@
 # 🏥 ZARISH HEALTH - FHIR R5 & HL7 v2 Go Library
 
 **Status**: Integrated with zh-core ✅  
-**Current Phase**: Phase 2 - Bangladesh Localization & ICD-11 Integration  
+**Current Phase**: Phase 3 - Rohingya Refugee Response Integration  
 **Last Updated**: February 14, 2026  
-**Version**: 0.2.0-alpha
+**Version**: 0.3.0-alpha
 
 ## 📋 Table of Contents
 
 1. [Vision & Mission](#-vision--mission)
 2. [Project Identity](#-project-identity)
-3. [Bangladesh Localization](#-bangladesh-localization)
+3. [Bangladesh & Rohingya Localization](#-bangladesh--rohingya-localization)
 4. [Features](#-features)
-5. [Technology Stack](#-technology-stack)
-6. [Project Structure](#-project-structure)
-7. [Quick Start Guide](#-quick-start-guide)
+5. [Project Structure](#-project-structure)
+6. [Quick Start Guide](#-quick-start-guide)
+7. [Build & Publish Guide](#-build--publish-guide)
 8. [Resources & Support](#-resources--support)
 
 ## 🎯 Vision & Mission
 
 ### Vision
-To provide the foundational data structures and interoperability tools for the **ZARISH HEALTH** ecosystem, ensuring seamless data exchange across humanitarian health settings using global standards, specifically tailored for **Bangladesh**.
+To provide the foundational data structures and interoperability tools for the **ZARISH HEALTH** ecosystem, ensuring seamless data exchange across humanitarian health settings, specifically for **Bangladesh** and the **Rohingya Refugee Response**.
 
 ### Mission
-* **Standardize**: Implement full FHIR R5 and HL7 v2 specifications for Go-based microservices.
-* **Localize**: Incorporate Bangladesh-specific identifiers (NID, BRN), ValueSets (Divisions, Districts), and ICD-11 terminology.
-* **Simplify**: Provide type-safe, easy-to-use Go structs for complex healthcare resources.
+* **Standardize**: Full FHIR R5 and HL7 v2 specifications.
+* **Localize**: Specialized support for NID, BRN, FCN, Progress ID, and detailed Camp/Shelter tracking.
+* **Empower**: Enable clinicians in humanitarian settings with standardized data tools.
 
-## 🆔 Project Identity
+## 🇧🇩 Bangladesh & Rohingya Localization
 
-* **Organization**: [zs-health](https://github.com/zs-health)
-* **Project Name**: zh-fhir-go
-* **Parent Platform**: [ZARISH HEALTH](https://github.com/zs-health/zh-core)
-* **Standards Compliance**: FHIR R5, HL7 v2.x, ICD-11, LOINC
+This library includes specialized support for the humanitarian context in Bangladesh:
 
-## 🇧🇩 Bangladesh Localization
-
-This library includes specialized support for the Bangladesh healthcare context:
-
-*   **Identifiers**: Extensions for National ID (NID) and Birth Registration Number (BRN).
-*   **Terminology**: Built-in support for **ICD-11** (WHO) coding systems.
-*   **ValueSets**: Localized lists for Bangladesh Divisions, Districts, and Upazilas.
-*   **Profiles**: Specialized FHIR profiles (e.g., `BDPatient`) to ensure data consistency across local health facilities.
-
-## ✨ Features
-
-### FHIR R5 Support
-* **158 FHIR Resources**: All R5 resources generated from official HL7 StructureDefinitions.
-* **Type-Safe API**: Compile-time safety with Go structs matching FHIR specification exactly.
-* **Validation**: Built-in validation for cardinality, mandatory elements, and choice types.
-
-### HL7 v2 Support
-* **Message Parsing**: Parse ADT, ORM, ORU, and other standard v2.x messages.
-* **Fluent API**: Programmatically build HL7 messages with ease.
-
-## 📁 Project Structure
-
-```text
-.
-├── cmd/
-│   └── zh-fhir/          # CLI tool for FHIR/HL7 operations
-├── fhir/
-│   ├── r5/               # FHIR R5 resource definitions
-│   │   ├── profiles/bd/  # Bangladesh-specific FHIR profiles
-│   │   ├── valuesets/bd/ # Bangladesh ValueSets (Divisions, etc.)
-│   │   └── terminology/  # ICD-11 and other terminology helpers
-│   ├── primitives/       # FHIR primitive types
-│   └── validation/       # FHIR resource validation logic
-├── hl7/                  # HL7 v2.x implementation
-├── go.mod                # Go module definition
-└── README.md             # Project documentation
-```
+*   **Rohingya Identifiers**: Support for **FCN** (Family Counting Number), **Progress ID**, and **MRN**.
+*   **Shelter Tracking**: Detailed extensions for **Camp**, **Block**, **Sub-block**, and **Shelter Number**.
+*   **Bangladesh Identifiers**: Extensions for National ID (NID) and Birth Registration Number (BRN).
+*   **Terminology**: Built-in support for **ICD-11** coding systems.
 
 ## 🚀 Quick Start Guide
 
-### Usage with Bangladesh Localization
+### Rohingya Refugee Patient Example
 
 ```go
 package main
 
 import (
     "github.com/zs-health/zh-fhir-go/fhir/r5/profiles/bd"
-    "github.com/zs-health/zh-fhir-go/fhir/r5/terminology/icd11"
 )
 
 func main() {
-    // Create a Bangladesh Patient
-    patient := bd.NewBDPatient()
-    patient.AddNID("1990123456789")
+    patient := bd.NewRohingyaPatient()
     
-    // Create an ICD-11 Diagnosis
-    diagnosis := icd11.NewCodeableConcept("BA00", "Essential hypertension")
+    // Add Specialized Identifiers
+    patient.AddRohingyaIdentifiers("FCN-123", "PROG-456", "MRN-789")
+    
+    // Set Shelter Location
+    patient.SetShelterLocation("Camp 1E", "Block A", "Sub-1", "S-101")
 }
 ```
 
-## 📏 Development Standards
+## 🛠 Build & Publish Guide
 
-This project follows the **ZARISH HEALTH** development standards:
-* **Naming**: Use `zh-` prefix for all ecosystem components.
-* **Localization**: Always prefer localized profiles (`bd.`) for patient demographics in Bangladesh.
+For users who are not coders, follow these simple steps to keep your library updated on GitHub.
 
-## 📞 Resources & Support
+### 1. Update Your Local Files
+If you have made changes or want to sync with the latest version:
+```bash
+cd ~/Desktop/zh-fhir-go
+git pull origin main
+```
 
-* **Organization**: [Zarish Sphere](https://github.com/zs-health)
-* **Main Platform**: [zh-core](https://github.com/zs-health/zh-core)
-* **Website**: [health.zarishsphere.com](https://health.zarishsphere.com)
+### 2. Verify Your Changes
+To ensure everything is working correctly, you can run the built-in tests:
+```bash
+go test ./...
+```
+
+### 3. Build the CLI Tool
+To create a usable program (`zh-fhir`) from the code:
+```bash
+go build -o zh-fhir ./cmd/zh-fhir
+```
+
+### 4. Publish to GitHub
+To save your latest changes to your GitHub organization:
+```bash
+git add .
+git commit -m "Update: Added new Rohingya refugee extensions"
+git push origin main
+```
+
+## 📁 Project Structure
+
+```text
+.
+├── cmd/
+│   └── zh-fhir/          # CLI tool
+├── fhir/
+│   ├── r5/
+│   │   ├── profiles/bd/  # Localized profiles (BDPatient, RohingyaPatient)
+│   │   ├── valuesets/bd/ # Localized ValueSets (Divisions, Camps)
+│   │   └── terminology/  # ICD-11 helpers
+├── hl7/                  # HL7 v2.x support
+└── README.md
+```
 
 ---
 © 2026 ZARISH HEALTH. All rights reserved.
