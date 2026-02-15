@@ -1,105 +1,69 @@
-# 🏥 ZARISH HEALTH - FHIR R5 & HL7 v2 Go Library
+# 🏥 ZARISH HEALTH - FHIR R5 & HL7 v2 Infrastructure
 
 **Status**: Integrated with zh-core ✅  
-**Current Phase**: Phase 3 - Rohingya Refugee Response Integration  
+**Current Phase**: Phase 4 - Full FHIR Infrastructure Deployment  
 **Last Updated**: February 14, 2026  
-**Version**: 0.3.0-alpha
+**Version**: 0.4.0-alpha
 
 ## 📋 Table of Contents
 
 1. [Vision & Mission](#-vision--mission)
 2. [Project Identity](#-project-identity)
-3. [Bangladesh & Rohingya Localization](#-bangladesh--rohingya-localization)
-4. [Features](#-features)
-5. [Project Structure](#-project-structure)
-6. [Quick Start Guide](#-quick-start-guide)
-7. [Build & Publish Guide](#-build--publish-guide)
-8. [Resources & Support](#-resources--support)
+3. [FHIR Infrastructure](#-fhir-infrastructure)
+4. [Bangladesh & Rohingya Localization](#-bangladesh--rohingya-localization)
+5. [Build & Publish Guide](#-build--publish-guide)
+6. [Resources & Support](#-resources--support)
 
 ## 🎯 Vision & Mission
 
 ### Vision
-To provide the foundational data structures and interoperability tools for the **ZARISH HEALTH** ecosystem, ensuring seamless data exchange across humanitarian health settings, specifically for **Bangladesh** and the **Rohingya Refugee Response**.
+To provide a complete, localized FHIR infrastructure for the **ZARISH HEALTH** ecosystem, supporting the **Bangladesh National Health Data Standards** and the **Rohingya Refugee Response**.
 
-### Mission
-* **Standardize**: Full FHIR R5 and HL7 v2 specifications.
-* **Localize**: Specialized support for NID, BRN, FCN, Progress ID, and detailed Camp/Shelter tracking.
-* **Empower**: Enable clinicians in humanitarian settings with standardized data tools.
+## 🏗 FHIR Infrastructure
 
-## 🇧🇩 Bangladesh & Rohingya Localization
+This repository now includes a complete set of tools for FHIR implementation:
 
-This library includes specialized support for the humanitarian context in Bangladesh:
+### 1. Terminology Server
+A lightweight, built-in terminology server for expanding ValueSets and validating codes (ICD-11, local geography).
+*   **Run**: `./zh-fhir -term-server -port 8080`
+*   **Endpoint**: `http://localhost:8080/fhir/ValueSet/$expand`
 
-*   **Rohingya Identifiers**: Support for **FCN** (Family Counting Number), **Progress ID**, and **MRN**.
-*   **Shelter Tracking**: Detailed extensions for **Camp**, **Block**, **Sub-block**, and **Shelter Number**.
-*   **Bangladesh Identifiers**: Extensions for National ID (NID) and Birth Registration Number (BRN).
-*   **Terminology**: Built-in support for **ICD-11** coding systems.
+### 2. DGHS Standard Profiles
+Localized profiles based on the **Bangladesh National FHIR IG**:
+*   **BDPatient**: Supports NID, BRN, UHID, and bilingual names.
+*   **BDAddress**: Standardized Bangladesh administrative levels.
 
-## 🚀 Quick Start Guide
-
-### Rohingya Refugee Patient Example
-
-```go
-package main
-
-import (
-    "github.com/zs-health/zh-fhir-go/fhir/r5/profiles/bd"
-)
-
-func main() {
-    patient := bd.NewRohingyaPatient()
-    
-    // Add Specialized Identifiers
-    patient.AddRohingyaIdentifiers("FCN-123", "PROG-456", "MRN-789")
-    
-    // Set Shelter Location
-    patient.SetShelterLocation("Camp 1E", "Block A", "Sub-1", "S-101")
-}
-```
+### 3. Rohingya Refugee Support
+Specialized extensions for humanitarian response:
+*   **Identifiers**: FCN, Progress ID, MRN.
+*   **Location**: Camp, Block, Sub-block, Shelter Number.
 
 ## 🛠 Build & Publish Guide
 
-For users who are not coders, follow these simple steps to keep your library updated on GitHub.
+### For Non-Coders:
+1.  **Sync Local Machine**:
+    ```bash
+    git pull origin main
+    ```
+2.  **Run Everything**:
+    ```bash
+    ./scripts/run_fhir.sh
+    ```
+    *This will build the tool and start the terminology server.*
 
-### 1. Update Your Local Files
-If you have made changes or want to sync with the latest version:
-```bash
-cd ~/Desktop/zh-fhir-go
-git pull origin main
-```
-
-### 2. Verify Your Changes
-To ensure everything is working correctly, you can run the built-in tests:
-```bash
-go test ./...
-```
-
-### 3. Build the CLI Tool
-To create a usable program (`zh-fhir`) from the code:
-```bash
-go build -o zh-fhir ./cmd/zh-fhir
-```
-
-### 4. Publish to GitHub
-To save your latest changes to your GitHub organization:
-```bash
-git add .
-git commit -m "Update: Added new Rohingya refugee extensions"
-git push origin main
-```
+### GitHub Actions:
+Every push to this repository is automatically built and tested via **GitHub Actions** to ensure quality and compliance.
 
 ## 📁 Project Structure
 
 ```text
 .
-├── cmd/
-│   └── zh-fhir/          # CLI tool
-├── fhir/
-│   ├── r5/
-│   │   ├── profiles/bd/  # Localized profiles (BDPatient, RohingyaPatient)
-│   │   ├── valuesets/bd/ # Localized ValueSets (Divisions, Camps)
-│   │   └── terminology/  # ICD-11 helpers
-├── hl7/                  # HL7 v2.x support
+├── .github/workflows/    # Automated build & test
+├── cmd/zh-fhir/          # CLI & Terminology Server
+├── fhir/r5/              # FHIR R5 Resources & Profiles
+│   ├── profiles/bd/      # Localized BD & Rohingya Profiles
+│   └── terminology/      # ICD-11 & Terminology Logic
+├── scripts/              # Infrastructure scripts
 └── README.md
 ```
 

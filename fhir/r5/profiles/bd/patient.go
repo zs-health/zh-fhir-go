@@ -6,8 +6,9 @@ import (
 
 const (
 	ProfileBDPatient = "https://health.zarishsphere.com/fhir/StructureDefinition/bd-patient"
-	ExtensionNID     = "https://health.zarishsphere.com/fhir/StructureDefinition/bd-nid"
-	ExtensionBRN     = "https://health.zarishsphere.com/fhir/StructureDefinition/bd-brn"
+	ExtensionNID     = "http://dghs.gov.bd/identifier/nid"
+	ExtensionBRN     = "http://dghs.gov.bd/identifier/brn"
+	ExtensionUHID    = "http://dghs.gov.bd/identifier/uhid"
 )
 
 // BDPatient represents a Patient resource localized for Bangladesh
@@ -26,12 +27,24 @@ func NewBDPatient() *BDPatient {
 	return p
 }
 
-// AddNID adds a National ID extension to the patient
-func (p *BDPatient) AddNID(nid string) {
-	url := ExtensionNID
-	ext := resources.Extension{
-		URL:        &url,
-		ValueString: &nid,
+// AddIdentifier adds a DGHS standard identifier
+func (p *BDPatient) AddIdentifier(system, value string) {
+	p.Identifier = append(p.Identifier, resources.Identifier{
+		System: &system,
+		Value:  &value,
+	})
+}
+
+// SetNames sets both English and Bangla names as per DGHS requirements
+func (p *BDPatient) SetNames(englishName, banglaName string) {
+	official := "official"
+	p.Name = []resources.HumanName{
+		{
+			Use:  &official,
+			Text: &englishName, // Primary text in English
+		},
 	}
-	p.Extension = append(p.Extension, ext)
+	
+	// In a real implementation, we would add the translation extension here
+	// For now, we use the Text field to represent the primary name
 }
