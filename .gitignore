@@ -48,6 +48,10 @@ site/
 bin/
 dist/
 
+## Documentation
+
+node_modules/
+
 ## DICOM catalogue databases
 
 *.db
