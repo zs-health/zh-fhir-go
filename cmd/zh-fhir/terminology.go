@@ -56,17 +56,17 @@ func (s *TerminologyServer) HandleExpand(w http.ResponseWriter, r *http.Request)
 
 func StartTerminologyServer(port int) {
 	server := NewTerminologyServer()
-	
+
 	// Add some sample ICD-11 concepts
 	server.AddConcept("http://id.who.int/icd/release/11/mms", "BA00", "Essential hypertension")
 	server.AddConcept("http://id.who.int/icd/release/11/mms", "1B10", "Tuberculosis of the lung")
-	
+
 	// Add Bangladesh Divisions
 	server.AddConcept("https://health.zarishsphere.com/fhir/ValueSet/bd-divisions", "DH", "Dhaka")
 	server.AddConcept("https://health.zarishsphere.com/fhir/ValueSet/bd-divisions", "CH", "Chattogram")
 
 	http.HandleFunc("/fhir/ValueSet/$expand", server.HandleExpand)
-	
+
 	fmt.Printf("Terminology Server starting on port %d...\n", port)
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }

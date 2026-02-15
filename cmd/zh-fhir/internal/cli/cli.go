@@ -8,32 +8,16 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/zs-health/zh-fhir-go/cmd/zh-fhir/internal/build"
 	"github.com/zs-health/zh-fhir-go/cmd/zh-fhir/internal/config"
-	"github.com/zs-health/zh-fhir-go/cmd/zh-fhir/internal/dicom/commands"
 )
 
 const (
 	appName        = "zh-fhir"
-	appDescription = "DICOM utility CLI for go-zh-fhir"
+	appDescription = "FHIR utility CLI for go-zh-fhir"
 )
 
 // CLI represents the root command structure.
 type CLI struct {
 	config.GlobalConfig
-
-	// DICOM subcommand group
-	Dicom DicomCmd `cmd:"" optional:"" help:"DICOM utilities"`
-}
-
-// DicomCmd is the parent command for all DICOM utilities.
-type DicomCmd struct {
-	Dump      commands.DumpCmd      `cmd:"" name:"dump" help:"Inspect DICOM file contents"`
-	Echo      commands.CEchoCmd     `cmd:"" name:"echo" help:"Verify DICOM connectivity (C-ECHO)"`
-	Store     commands.CStoreCmd    `cmd:"" name:"store" help:"Send DICOM files to server (C-STORE)"`
-	Modify    commands.ModifyCmd    `cmd:"" name:"modify" help:"Modify DICOM file tags"`
-	Organize  commands.OrganizeCmd  `cmd:"" name:"organize" help:"Reorganize DICOM files by UID structure"`
-	SCP       commands.SCPCmd       `cmd:"" name:"scp" help:"Run DICOM SCP server"`
-	Lookup    commands.LookupCmd    `cmd:"" name:"lookup" help:"Look up DICOM tag information"`
-	Catalogue commands.CatalogueCmd `cmd:"" name:"catalogue" help:"Build and query DICOM file catalogue database. Examples: 'zh-fhir dicom catalogue /path' (index), 'zh-fhir dicom catalogue --schema' (show schema), 'zh-fhir dicom catalogue --query modality=CR' (query), 'zh-fhir dicom catalogue --sql \"SELECT * FROM dicom_metadata WHERE modality='CR'\" --mode csv' (SQL export)"`
 }
 
 // Run executes the zh-fhir CLI with the provided build info.
