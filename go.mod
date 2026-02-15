@@ -1,6 +1,6 @@
 module github.com/zs-health/zh-fhir-go
 
-go 1.25.4
+go 1.24.0
 
 require (
 	github.com/go-playground/validator/v10 v10.28.0
