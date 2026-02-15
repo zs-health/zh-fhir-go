@@ -8,7 +8,7 @@ import (
 )
 
 func TestGenerator_GenerateFile(t *testing.T) {
-	gen := New("resources")
+	gen := New("resources", "R5")
 
 	types := []model.TypeDefinition{
 		{
@@ -277,7 +277,7 @@ func TestGenerator_NeedsFHIRImport(t *testing.T) {
 }
 
 func TestGenerator_GeneratedCodeHeaders(t *testing.T) {
-	gen := New("resources")
+	gen := New("resources", "R5")
 
 	types := []model.TypeDefinition{
 		{
@@ -332,7 +332,7 @@ func TestGenerator_GeneratedCodeHeaders(t *testing.T) {
 }
 
 func TestGenerator_ChoiceTypeGeneration(t *testing.T) {
-	gen := New("resources")
+	gen := New("resources", "R5")
 
 	types := []model.TypeDefinition{
 		{
@@ -392,7 +392,7 @@ func TestGenerator_ChoiceTypeGeneration(t *testing.T) {
 }
 
 func TestGenerator_JSONRawMessageField(t *testing.T) {
-	gen := New("resources")
+	gen := New("resources", "R5")
 
 	types := []model.TypeDefinition{
 		{
@@ -429,7 +429,7 @@ func TestGenerator_JSONRawMessageField(t *testing.T) {
 }
 
 func TestGenerator_StructEmbedding(t *testing.T) {
-	gen := New("resources")
+	gen := New("resources", "R5")
 
 	types := []model.TypeDefinition{
 		{
