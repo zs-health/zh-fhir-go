@@ -1,0 +1,3 @@
+[submodule "BD-Core-FHIR-IG"]
+	path = BD-Core-FHIR-IG
+	url = https://github.com/zs-health/BD-Core-FHIR-IG.git
