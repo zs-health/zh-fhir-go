@@ -20,12 +20,14 @@ const (
 // Generator generates Go code from FHIR StructureDefinitions.
 type Generator struct {
 	packageName string
+	version     string
 }
 
 // New creates a new code generator.
-func New(packageName string) *Generator {
+func New(packageName string, version string) *Generator {
 	return &Generator{
 		packageName: packageName,
+		version:     version,
 	}
 }
 
@@ -244,7 +246,7 @@ func (g *Generator) GenerateFile(types []model.TypeDefinition) (string, error) {
 		NeedsJSON:        needsJSON,
 		NeedsFHIR:        needsFHIR,
 		ResourceType:     resourceType,
-		FHIRVersion:      "R5",
+		FHIRVersion:      strings.ToUpper(g.version),
 		GeneratorVersion: GeneratorVersion,
 		GeneratedAt:      time.Now().UTC().Format(time.RFC3339),
 	}

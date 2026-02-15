@@ -6,7 +6,7 @@ import (
 
 	"github.com/zs-health/zh-fhir-go/fhir"
 	"github.com/zs-health/zh-fhir-go/fhir/internal/testutil"
-	"github.com/zs-health/zh-fhir-go/fhir/r5/resources"
+	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
 // TestUnmarshalResource tests the generic UnmarshalResource function

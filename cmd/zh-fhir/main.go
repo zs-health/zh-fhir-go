@@ -3,9 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/zs-health/zh-fhir-go/cmd/zh-fhir/internal/cli"
+	"github.com/zs-health/zh-fhir-go/internal/ig"
+	"github.com/zs-health/zh-fhir-go/internal/server"
 )
 
 // Version information (injected at build time via ldflags)
@@ -16,9 +19,24 @@ var (
 )
 
 func main() {
-	termServer := flag.Bool("term-server", false, "Start the terminology server")
-	port := flag.Int("port", 8080, "Port for the terminology server")
+	serverMode := flag.Bool("server", false, "Start the full FHIR server")
+	termServer := flag.Bool("term-server", false, "Start the legacy terminology server")
+	port := flag.Int("port", 8080, "Port for the server")
+	igPath := flag.String("ig", "./BD-Core-FHIR-IG", "Path to the Bangladesh FHIR IG")
 	flag.Parse()
+
+	if *serverMode {
+		loader := ig.NewLoader()
+		log.Printf("Loading IG data from %s...", *igPath)
+		if err := loader.LoadFromIG(*igPath); err != nil {
+			log.Printf("Warning: Failed to load IG: %v", err)
+		}
+		log.Printf("Loaded %d CodeSystems and %d ValueSets", len(loader.CodeSystems), len(loader.ValueSets))
+
+		s := server.NewServer(loader)
+		s.Start(*port)
+		return
+	}
 
 	if *termServer {
 		StartTerminologyServer(*port)

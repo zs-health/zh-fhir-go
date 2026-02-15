@@ -36,6 +36,7 @@ sbom/
 playground/
 .env*
 notes.md
+fhir/scripts/gen/fhirgen
 
 ## Documentation build artifacts
 

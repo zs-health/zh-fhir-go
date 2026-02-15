@@ -83,7 +83,10 @@ func run() error {
 
 	// Create builder with appropriate package name
 	packageName := "resources"
-	builder := codegen.NewBuilder(p, packageName, *verbose)
+	if *version == versionR4 {
+		packageName = "r4"
+	}
+	builder := codegen.NewBuilder(p, packageName, *version, *verbose)
 
 	// Set resource filter if provided
 	if len(resourceFilter) > 0 {

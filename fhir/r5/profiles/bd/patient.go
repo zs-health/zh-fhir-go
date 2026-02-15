@@ -1,7 +1,7 @@
 package bd
 
 import (
-	"github.com/zs-health/zh-fhir-go/fhir/r5/resources"
+	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
 const (
@@ -11,17 +11,17 @@ const (
 	ExtensionUHID    = "http://dghs.gov.bd/identifier/uhid"
 )
 
-// BDPatient represents a Patient resource localized for Bangladesh
+// BDPatient represents a r5.Patient resource localized for Bangladesh
 type BDPatient struct {
-	resources.Patient
+	r5.Patient
 }
 
-// NewBDPatient creates a new localized Patient
+// NewBDPatient creates a new localized r5.Patient
 func NewBDPatient() *BDPatient {
 	p := &BDPatient{}
 	profile := ProfileBDPatient
 	if p.Meta == nil {
-		p.Meta = &resources.Meta{}
+		p.Meta = &r5.Meta{}
 	}
 	p.Meta.Profile = []string{profile}
 	return p
@@ -29,7 +29,7 @@ func NewBDPatient() *BDPatient {
 
 // AddIdentifier adds a DGHS standard identifier
 func (p *BDPatient) AddIdentifier(system, value string) {
-	p.Identifier = append(p.Identifier, resources.Identifier{
+	p.Identifier = append(p.Identifier, r5.Identifier{
 		System: &system,
 		Value:  &value,
 	})
@@ -38,7 +38,7 @@ func (p *BDPatient) AddIdentifier(system, value string) {
 // SetNames sets both English and Bangla names as per DGHS requirements
 func (p *BDPatient) SetNames(englishName, banglaName string) {
 	official := "official"
-	p.Name = []resources.HumanName{
+	p.Name = []r5.HumanName{
 		{
 			Use:  &official,
 			Text: &englishName, // Primary text in English

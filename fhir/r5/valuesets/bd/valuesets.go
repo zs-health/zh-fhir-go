@@ -1,7 +1,7 @@
 package bd
 
 import (
-	"github.com/zs-health/zh-fhir-go/fhir/r5/resources"
+	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
 const (
@@ -21,11 +21,11 @@ var Divisions = map[string]string{
 	"MY": "Mymensingh",
 }
 
-// GetDivisionCoding returns a FHIR Coding for a Bangladesh division
-func GetDivisionCoding(code string) *resources.Coding {
+// GetDivisionCoding returns a FHIR r5.Coding for a Bangladesh division
+func GetDivisionCoding(code string) *r5.Coding {
 	if display, ok := Divisions[code]; ok {
 		system := SystemBDDivisions
-		return &resources.Coding{
+		return &r5.Coding{
 			System:  &system,
 			Code:    &code,
 			Display: &display,
@@ -50,11 +50,11 @@ var RohingyaCamps = map[string]string{
 	"NYP": "Nayapara RC",
 }
 
-// GetCampCoding returns a FHIR Coding for a Rohingya camp
-func GetCampCoding(code string) *resources.Coding {
+// GetCampCoding returns a FHIR r5.Coding for a Rohingya camp
+func GetCampCoding(code string) *r5.Coding {
 	if display, ok := RohingyaCamps[code]; ok {
 		system := SystemRohingyaCamps
-		return &resources.Coding{
+		return &r5.Coding{
 			System:  &system,
 			Code:    &code,
 			Display: &display,

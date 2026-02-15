@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/zs-health/zh-fhir-go/fhir"
-	"github.com/zs-health/zh-fhir-go/fhir/r5/resources"
+	"github.com/zs-health/zh-fhir-go/fhir/r5"
 	"github.com/zs-health/zh-fhir-go/fhir/validation"
 )
 

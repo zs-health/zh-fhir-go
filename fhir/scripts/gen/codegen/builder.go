@@ -14,16 +14,18 @@ type Builder struct {
 	parser         *parser.Parser
 	typeMapper     *parser.TypeMapper
 	generator      *Generator
+	version        string
 	verbose        bool
 	resourceFilter map[string]bool // Set of resource names to generate (nil = all)
 }
 
 // NewBuilder creates a new type builder.
-func NewBuilder(p *parser.Parser, packageName string, verbose bool) *Builder {
+func NewBuilder(p *parser.Parser, version string, packageName string, verbose bool) *Builder {
 	return &Builder{
 		parser:     p,
 		typeMapper: parser.NewTypeMapper(),
-		generator:  New(packageName),
+		generator:  New(packageName, version),
+		version:    version,
 		verbose:    verbose,
 	}
 }

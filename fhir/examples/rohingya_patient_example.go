@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/zs-health/zh-fhir-go/fhir/r5/profiles/bd"
-	"github.com/zs-health/zh-fhir-go/fhir/r5/resources"
+	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
 func main() {
