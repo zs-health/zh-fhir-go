@@ -22,7 +22,7 @@ func NewCoding(code, display string) r5.Coding {
 func NewCodeableConcept(code, display string) r5.CodeableConcept {
 	coding := NewCoding(code, display)
 	return r5.CodeableConcept{
-		r5.Coding: []r5.Coding{coding},
+		Coding: []r5.Coding{coding},
 		Text:   &display,
 	}
 }

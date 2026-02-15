@@ -1,6 +1,6 @@
 //go:build ignore
 
-package main
+package examples
 
 import (
 	"encoding/json"
@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Unmarshal into Patient struct
-	var patient resources.Patient
+	var patient r5.Patient
 	if err := json.Unmarshal(data, &patient); err != nil {
 		fmt.Fprintf(os.Stderr, "Error unmarshaling JSON: %v\n", err)
 		os.Exit(1)

@@ -141,7 +141,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 			// Unmarshal into appropriate type and validate
 			switch tt.resourceType {
 			case "Patient":
-				var patient resources.Patient
+				var patient r5.Patient
 				if err := json.Unmarshal(data, &patient); err != nil {
 					t.Fatalf("Failed to unmarshal Patient: %v", err)
 				}
@@ -152,7 +152,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 					t.Fatalf("Failed to marshal Patient: %v", err)
 				}
 
-				var roundTrip resources.Patient
+				var roundTrip r5.Patient
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Patient: %v", err)
 				}
@@ -168,7 +168,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Patient with ID: %v", patient.ID)
 
 			case "Observation":
-				var observation resources.Observation
+				var observation r5.Observation
 				if err := json.Unmarshal(data, &observation); err != nil {
 					t.Fatalf("Failed to unmarshal Observation: %v", err)
 				}
@@ -179,7 +179,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 					t.Fatalf("Failed to marshal Observation: %v", err)
 				}
 
-				var roundTrip resources.Observation
+				var roundTrip r5.Observation
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Observation: %v", err)
 				}
@@ -216,7 +216,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Bundle with %d entries", count)
 
 			case "DiagnosticReport":
-				var resource resources.DiagnosticReport
+				var resource r5.DiagnosticReport
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal DiagnosticReport: %v", err)
 				}
@@ -224,7 +224,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal DiagnosticReport: %v", err)
 				}
-				var roundTrip resources.DiagnosticReport
+				var roundTrip r5.DiagnosticReport
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip DiagnosticReport: %v", err)
 				}
@@ -236,7 +236,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed DiagnosticReport with ID: %v", resource.ID)
 
 			case "ImagingStudy":
-				var resource resources.ImagingStudy
+				var resource r5.ImagingStudy
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal ImagingStudy: %v", err)
 				}
@@ -244,7 +244,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal ImagingStudy: %v", err)
 				}
-				var roundTrip resources.ImagingStudy
+				var roundTrip r5.ImagingStudy
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip ImagingStudy: %v", err)
 				}
@@ -256,7 +256,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed ImagingStudy with ID: %v", resource.ID)
 
 			case "Encounter":
-				var resource resources.Encounter
+				var resource r5.Encounter
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Encounter: %v", err)
 				}
@@ -264,7 +264,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Encounter: %v", err)
 				}
-				var roundTrip resources.Encounter
+				var roundTrip r5.Encounter
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Encounter: %v", err)
 				}
@@ -276,7 +276,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Encounter with ID: %v", resource.ID)
 
 			case "Condition":
-				var resource resources.Condition
+				var resource r5.Condition
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Condition: %v", err)
 				}
@@ -284,7 +284,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Condition: %v", err)
 				}
-				var roundTrip resources.Condition
+				var roundTrip r5.Condition
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Condition: %v", err)
 				}
@@ -296,7 +296,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Condition with ID: %v", resource.ID)
 
 			case "Procedure":
-				var resource resources.Procedure
+				var resource r5.Procedure
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Procedure: %v", err)
 				}
@@ -304,7 +304,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Procedure: %v", err)
 				}
-				var roundTrip resources.Procedure
+				var roundTrip r5.Procedure
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Procedure: %v", err)
 				}
@@ -316,7 +316,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Procedure with ID: %v", resource.ID)
 
 			case "MedicationRequest":
-				var resource resources.MedicationRequest
+				var resource r5.MedicationRequest
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal MedicationRequest: %v", err)
 				}
@@ -324,7 +324,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal MedicationRequest: %v", err)
 				}
-				var roundTrip resources.MedicationRequest
+				var roundTrip r5.MedicationRequest
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip MedicationRequest: %v", err)
 				}
@@ -336,7 +336,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed MedicationRequest with ID: %v", resource.ID)
 
 			case "ServiceRequest":
-				var resource resources.ServiceRequest
+				var resource r5.ServiceRequest
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal ServiceRequest: %v", err)
 				}
@@ -344,7 +344,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal ServiceRequest: %v", err)
 				}
-				var roundTrip resources.ServiceRequest
+				var roundTrip r5.ServiceRequest
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip ServiceRequest: %v", err)
 				}
@@ -356,7 +356,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed ServiceRequest with ID: %v", resource.ID)
 
 			case "Organization":
-				var resource resources.Organization
+				var resource r5.Organization
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Organization: %v", err)
 				}
@@ -364,7 +364,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Organization: %v", err)
 				}
-				var roundTrip resources.Organization
+				var roundTrip r5.Organization
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Organization: %v", err)
 				}
@@ -376,7 +376,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Organization with ID: %v", resource.ID)
 
 			case "Practitioner":
-				var resource resources.Practitioner
+				var resource r5.Practitioner
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Practitioner: %v", err)
 				}
@@ -384,7 +384,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Practitioner: %v", err)
 				}
-				var roundTrip resources.Practitioner
+				var roundTrip r5.Practitioner
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Practitioner: %v", err)
 				}
@@ -396,7 +396,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				t.Logf("Successfully processed Practitioner with ID: %v", resource.ID)
 
 			case "Location":
-				var resource resources.Location
+				var resource r5.Location
 				if err := json.Unmarshal(data, &resource); err != nil {
 					t.Fatalf("Failed to unmarshal Location: %v", err)
 				}
@@ -404,7 +404,7 @@ func TestOfficialFHIRExamples(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to marshal Location: %v", err)
 				}
-				var roundTrip resources.Location
+				var roundTrip r5.Location
 				if err := json.Unmarshal(roundTripData, &roundTrip); err != nil {
 					t.Fatalf("Failed to unmarshal round-trip Location: %v", err)
 				}
@@ -488,7 +488,7 @@ func TestOfficialExamplesSummaryMode(t *testing.T) {
 		t.Skip("Patient example not available")
 	}
 
-	var patient resources.Patient
+	var patient r5.Patient
 	if err := json.Unmarshal(data, &patient); err != nil {
 		t.Fatalf("Failed to unmarshal patient: %v", err)
 	}

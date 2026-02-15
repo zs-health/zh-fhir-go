@@ -1,6 +1,6 @@
 //go:build ignore
 
-package main
+package examples
 
 import (
 	"encoding/json"
@@ -26,15 +26,15 @@ func main() {
 	fmt.Println(string(data))
 }
 
-func createBloodPressureObservation() resources.Observation {
+func createBloodPressureObservation() r5.Observation {
 	effectiveDateTime := primitives.MustDateTime("2024-01-15T10:30:00Z")
 
-	return resources.Observation{
+	return r5.Observation{
 		ID:     testutil.StringPtr("blood-pressure"),
 		Status: "final",
-		Category: []resources.CodeableConcept{
+		Category: []r5.CodeableConcept{
 			{
-				Coding: []resources.Coding{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/observation-category"),
 						Code:    testutil.StringPtr("vital-signs"),
@@ -43,8 +43,8 @@ func createBloodPressureObservation() resources.Observation {
 				},
 			},
 		},
-		Code: resources.CodeableConcept{
-			Coding: []resources.Coding{
+		Code: r5.CodeableConcept{
+			Coding: []r5.Coding{
 				{
 					System:  testutil.StringPtr("http://loinc.org"),
 					Code:    testutil.StringPtr("85354-9"),
@@ -53,14 +53,14 @@ func createBloodPressureObservation() resources.Observation {
 			},
 			Text: testutil.StringPtr("Blood pressure systolic & diastolic"),
 		},
-		Subject: resources.Reference{
+		Subject: r5.Reference{
 			Reference: testutil.StringPtr("Patient/example"),
 		},
 		EffectiveDateTime: &effectiveDateTime,
-		Component: []resources.ObservationComponent{
+		Component: []r5.ObservationComponent{
 			{
-				Code: resources.CodeableConcept{
-					Coding: []resources.Coding{
+				Code: r5.CodeableConcept{
+					Coding: []r5.Coding{
 						{
 							System:  testutil.StringPtr("http://loinc.org"),
 							Code:    testutil.StringPtr("8480-6"),
@@ -68,7 +68,7 @@ func createBloodPressureObservation() resources.Observation {
 						},
 					},
 				},
-				ValueQuantity: &resources.Quantity{
+				ValueQuantity: &r5.Quantity{
 					Value:  float64Ptr(120),
 					Unit:   testutil.StringPtr("mmHg"),
 					System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -76,8 +76,8 @@ func createBloodPressureObservation() resources.Observation {
 				},
 			},
 			{
-				Code: resources.CodeableConcept{
-					Coding: []resources.Coding{
+				Code: r5.CodeableConcept{
+					Coding: []r5.Coding{
 						{
 							System:  testutil.StringPtr("http://loinc.org"),
 							Code:    testutil.StringPtr("8462-4"),
@@ -85,7 +85,7 @@ func createBloodPressureObservation() resources.Observation {
 						},
 					},
 				},
-				ValueQuantity: &resources.Quantity{
+				ValueQuantity: &r5.Quantity{
 					Value:  float64Ptr(80),
 					Unit:   testutil.StringPtr("mmHg"),
 					System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -93,9 +93,9 @@ func createBloodPressureObservation() resources.Observation {
 				},
 			},
 		},
-		Interpretation: []resources.CodeableConcept{
+		Interpretation: []r5.CodeableConcept{
 			{
-				Coding: []resources.Coding{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"),
 						Code:    testutil.StringPtr("N"),

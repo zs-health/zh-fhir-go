@@ -6,7 +6,7 @@ import (
 	"github.com/zs-health/zh-fhir-go/fhir/scripts/gen/model"
 )
 
-// TestMapType tests basic type mapping from FHIR to Go types.
+// TestMapType tests basic type mapping from FHIR to Go r5.
 func TestMapType(t *testing.T) {
 	tm := NewTypeMapper()
 
@@ -224,7 +224,7 @@ func TestMapElementToField_ResourceType(t *testing.T) {
 	}
 }
 
-// TestMapElementToField_NonChoicePolymorphic tests non-choice polymorphic types.
+// TestMapElementToField_NonChoicePolymorphic tests non-choice polymorphic r5.
 func TestMapElementToField_NonChoicePolymorphic(t *testing.T) {
 	tm := NewTypeMapper()
 

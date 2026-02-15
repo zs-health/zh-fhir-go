@@ -38,7 +38,7 @@ func BenchmarkPatient_Unmarshal(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		var p resources.Patient
+		var p r5.Patient
 		if err := json.Unmarshal(data, &p); err != nil {
 			b.Fatal(err)
 		}
@@ -56,7 +56,7 @@ func BenchmarkPatient_RoundTrip(b *testing.B) {
 			b.Fatal(err)
 		}
 
-		var p resources.Patient
+		var p r5.Patient
 		if err := json.Unmarshal(data, &p); err != nil {
 			b.Fatal(err)
 		}
@@ -140,10 +140,10 @@ func BenchmarkBundle_GetPatients(b *testing.B) {
 func BenchmarkObservation_Create(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		obs := &resources.Observation{
+		obs := &r5.Observation{
 			Status: "final",
-			Code: resources.CodeableConcept{
-				Coding: []resources.Coding{
+			Code: r5.CodeableConcept{
+				Coding: []r5.Coding{
 					{
 						System:  stringPtr("http://loinc.org"),
 						Code:    stringPtr("8867-4"),
@@ -162,10 +162,10 @@ func BenchmarkObservation_Create(b *testing.B) {
 func BenchmarkObservation_WithComponents(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		obs := &resources.Observation{
+		obs := &r5.Observation{
 			Status: "final",
-			Code: resources.CodeableConcept{
-				Coding: []resources.Coding{
+			Code: r5.CodeableConcept{
+				Coding: []r5.Coding{
 					{
 						System:  stringPtr("http://loinc.org"),
 						Code:    stringPtr("85354-9"),
@@ -173,10 +173,10 @@ func BenchmarkObservation_WithComponents(b *testing.B) {
 					},
 				},
 			},
-			Component: []resources.ObservationComponent{
+			Component: []r5.ObservationComponent{
 				{
-					Code: resources.CodeableConcept{
-						Coding: []resources.Coding{
+					Code: r5.CodeableConcept{
+						Coding: []r5.Coding{
 							{
 								System:  stringPtr("http://loinc.org"),
 								Code:    stringPtr("8480-6"),
@@ -186,8 +186,8 @@ func BenchmarkObservation_WithComponents(b *testing.B) {
 					},
 				},
 				{
-					Code: resources.CodeableConcept{
-						Coding: []resources.Coding{
+					Code: r5.CodeableConcept{
+						Coding: []r5.Coding{
 							{
 								System:  stringPtr("http://loinc.org"),
 								Code:    stringPtr("8462-4"),
@@ -205,11 +205,11 @@ func BenchmarkObservation_WithComponents(b *testing.B) {
 }
 
 // Helper functions
-func createTestPatient() *resources.Patient {
+func createTestPatient() *r5.Patient {
 	birthDate := primitives.MustDate("1974-12-25")
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: boolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    stringPtr("official"),
 				Family: stringPtr("Doe"),
@@ -218,13 +218,13 @@ func createTestPatient() *resources.Patient {
 		},
 		Gender:    stringPtr("male"),
 		BirthDate: &birthDate,
-		Telecom: []resources.ContactPoint{
+		Telecom: []r5.ContactPoint{
 			{
 				System: stringPtr("phone"),
 				Value:  stringPtr("555-1234"),
 			},
 		},
-		Address: []resources.Address{
+		Address: []r5.Address{
 			{
 				Line:       []string{"123 Main St"},
 				City:       stringPtr("Springfield"),

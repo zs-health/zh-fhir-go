@@ -1,55 +1,35 @@
-package main
+package examples
 
 import (
-	"encoding/json"
 	"fmt"
+
 	"github.com/zs-health/zh-fhir-go/fhir/r5/profiles/bd"
-	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
-func main() {
-	// 1. Create a specialized Rohingya Patient
+// RohingyaPatientExample demonstrates using localized R5 profiles for the Rohingya Response
+func RohingyaPatientExample() {
+	// Create a new Rohingya Patient profile
 	patient := bd.NewRohingyaPatient()
-	patient.ID = stringPtr("rohingya-example-001")
+	patient.ID = stringPtrRohingya("rohingya-patient-001")
 
-	// 2. Add Specialized Identifiers
-	// FCN (Family Counting Number), Progress ID, and MRN (Medical Record Number)
+	// Set standard Identifiers with Rohingya-specific extensions
 	patient.AddRohingyaIdentifiers(
-		"123-456-789", // FCN
-		"PROG-998877", // Progress ID
-		"MRN-BD-5544", // MRN
+		"FCN-123456",    // Family Counting Number
+		"PID-987654321", // Progress ID
+		"MRN-BD-001",    // Medical Record Number
 	)
 
-	// 3. Set Name
-	patient.Name = []resources.HumanName{
-		{
-			Family: stringPtr("Ali"),
-			Given:  []string{"Mohammad"},
-		},
-	}
-
-	// 4. Set Detailed Shelter Location
-	// Camp, Block, Sub-block, and Shelter Number
+	// Set detailed shelter location
 	patient.SetShelterLocation(
-		"Camp 1E",   // Camp
-		"Block A",   // Block
-		"Sub-Block 2", // Sub-block
-		"S-105",     // Shelter Number
+		"Camp 1E",     // Camp
+		"Block A",     // Block
+		"Sub-block 1", // Sub-block
+		"Shelter 101", // Shelter/House Number
 	)
 
-	// 5. Add General Bangladesh Address
-	patient.Address = []resources.Address{
-		{
-			City:    stringPtr("Ukhiya"),
-			State:   stringPtr("Chattogram"),
-			Country: stringPtr("Bangladesh"),
-		},
-	}
-
-	// 6. Print the localized Rohingya Patient as JSON
-	patientJSON, _ := json.MarshalIndent(patient, "", "  ")
-	fmt.Println("Localized Rohingya Refugee Patient Resource:")
-	fmt.Println(string(patientJSON))
+	fmt.Printf("Created Rohingya Patient: %s\n", *patient.ID)
 }
 
-func stringPtr(s string) *string { return &s }
+func stringPtrRohingya(s string) *string {
+	return &s
+}

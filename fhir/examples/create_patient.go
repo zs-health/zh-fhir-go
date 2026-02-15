@@ -1,6 +1,6 @@
 //go:build ignore
 
-package main
+package examples
 
 import (
 	"encoding/json"
@@ -51,14 +51,14 @@ func main() {
 	fmt.Println(string(data))
 }
 
-func createPatient() resources.Patient {
+func createPatient() r5.Patient {
 	active := true
 	birthDate := primitives.MustDate("1974-12-25")
 
-	return resources.Patient{
+	return r5.Patient{
 		ID:     testutil.StringPtr("example"),
 		Active: &active,
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Chalmers"),
@@ -71,7 +71,7 @@ func createPatient() resources.Patient {
 		},
 		Gender:    testutil.StringPtr("male"),
 		BirthDate: &birthDate,
-		Telecom: []resources.ContactPoint{
+		Telecom: []r5.ContactPoint{
 			{
 				System: testutil.StringPtr("phone"),
 				Value:  testutil.StringPtr("(03) 5555 6473"),
@@ -85,7 +85,7 @@ func createPatient() resources.Patient {
 				Rank:   testutil.IntPtr(2),
 			},
 		},
-		Address: []resources.Address{
+		Address: []r5.Address{
 			{
 				Use:        testutil.StringPtr("home"),
 				Type:       testutil.StringPtr("both"),
@@ -93,13 +93,13 @@ func createPatient() resources.Patient {
 				City:       testutil.StringPtr("PleasantVille"),
 				State:      testutil.StringPtr("Vic"),
 				PostalCode: testutil.StringPtr("3999"),
-				Period: &resources.Period{
+				Period: &r5.Period{
 					Start: datetimePtr("1974-12-25"),
 				},
 			},
 		},
-		MaritalStatus: &resources.CodeableConcept{
-			Coding: []resources.Coding{
+		MaritalStatus: &r5.CodeableConcept{
+			Coding: []r5.Coding{
 				{
 					System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"),
 					Code:    testutil.StringPtr("M"),
@@ -107,11 +107,11 @@ func createPatient() resources.Patient {
 				},
 			},
 		},
-		Contact: []resources.PatientContact{
+		Contact: []r5.PatientContact{
 			{
-				Relationship: []resources.CodeableConcept{
+				Relationship: []r5.CodeableConcept{
 					{
-						Coding: []resources.Coding{
+						Coding: []r5.Coding{
 							{
 								System: testutil.StringPtr("http://terminology.hl7.org/CodeSystem/v2-0131"),
 								Code:   testutil.StringPtr("N"),
@@ -119,29 +119,29 @@ func createPatient() resources.Patient {
 						},
 					},
 				},
-				Name: &resources.HumanName{
+				Name: &r5.HumanName{
 					Family: testutil.StringPtr("du Marché"),
 					Given:  []string{"Bénédicte"},
 				},
-				Telecom: []resources.ContactPoint{
+				Telecom: []r5.ContactPoint{
 					{
 						System: testutil.StringPtr("phone"),
 						Value:  testutil.StringPtr("+33 (237) 998327"),
 					},
 				},
-				Address: &resources.Address{
+				Address: &r5.Address{
 					Use:        testutil.StringPtr("home"),
 					Type:       testutil.StringPtr("both"),
 					Line:       []string{"534 Erewhon St"},
 					City:       testutil.StringPtr("PleasantVille"),
 					State:      testutil.StringPtr("Vic"),
 					PostalCode: testutil.StringPtr("3999"),
-					Period: &resources.Period{
+					Period: &r5.Period{
 						Start: datetimePtr("1974-12-25"),
 					},
 				},
 				Gender: testutil.StringPtr("female"),
-				Period: &resources.Period{
+				Period: &r5.Period{
 					Start: datetimePtr("2012"),
 				},
 			},
@@ -155,17 +155,17 @@ func datetimePtr(s string) *primitives.DateTime {
 }
 
 // createDeceasedPatient demonstrates using the deceasedBoolean choice type field.
-// This shows type-safe handling of FHIR choice types.
-func createDeceasedPatient() resources.Patient {
+// This shows type-safe handling of FHIR choice r5.
+func createDeceasedPatient() r5.Patient {
 	active := false
 	birthDate := primitives.MustDate("1950-03-15")
 	deceased := true // Using boolean choice
 
-	return resources.Patient{
+	return r5.Patient{
 		ID:              testutil.StringPtr("deceased-example"),
 		Active:          &active,
 		DeceasedBoolean: &deceased, // One of the deceased[x] choices
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Smith"),
@@ -180,16 +180,16 @@ func createDeceasedPatient() resources.Patient {
 // createDeceasedPatientWithDate demonstrates using the deceasedDateTime choice type field.
 // This shows how to choose a different type for the same choice type field.
 // NOTE: Only ONE of deceasedBoolean or deceasedDateTime should be set.
-func createDeceasedPatientWithDate() resources.Patient {
+func createDeceasedPatientWithDate() r5.Patient {
 	active := false
 	birthDate := primitives.MustDate("1950-03-15")
 	deceasedDate := primitives.MustDateTime("2023-06-15T14:30:00Z") // Using dateTime choice
 
-	return resources.Patient{
+	return r5.Patient{
 		ID:               testutil.StringPtr("deceased-date-example"),
 		Active:           &active,
 		DeceasedDateTime: &deceasedDate, // Different choice from deceasedBoolean
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Johnson"),

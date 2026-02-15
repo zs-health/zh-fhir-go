@@ -26,7 +26,7 @@ func TestUnmarshalResource(t *testing.T) {
 		}`)
 
 		// Unmarshal using the generic function
-		patient, err := fhir.UnmarshalResource[resources.Patient](patientJSON)
+		patient, err := fhir.UnmarshalResource[r5.Patient](patientJSON)
 		if err != nil {
 			t.Fatalf("UnmarshalResource failed: %v", err)
 		}
@@ -67,7 +67,7 @@ func TestUnmarshalResource(t *testing.T) {
 			}
 		}`)
 
-		observation, err := fhir.UnmarshalResource[resources.Observation](observationJSON)
+		observation, err := fhir.UnmarshalResource[r5.Observation](observationJSON)
 		if err != nil {
 			t.Fatalf("UnmarshalResource failed: %v", err)
 		}
@@ -84,7 +84,7 @@ func TestUnmarshalResource(t *testing.T) {
 	t.Run("unmarshal invalid JSON returns error", func(t *testing.T) {
 		invalidJSON := json.RawMessage(`{invalid json`)
 
-		_, err := fhir.UnmarshalResource[resources.Patient](invalidJSON)
+		_, err := fhir.UnmarshalResource[r5.Patient](invalidJSON)
 		if err == nil {
 			t.Error("Expected error for invalid JSON, got nil")
 		}
@@ -112,7 +112,7 @@ func TestUnmarshalContainedResource(t *testing.T) {
 		contained := []json.RawMessage{patientJSON, organizationJSON}
 
 		// Unmarshal the first contained resource (Patient)
-		patient, err := fhir.UnmarshalContainedResource[resources.Patient](contained, 0)
+		patient, err := fhir.UnmarshalContainedResource[r5.Patient](contained, 0)
 		if err != nil {
 			t.Fatalf("UnmarshalContainedResource failed: %v", err)
 		}
@@ -122,7 +122,7 @@ func TestUnmarshalContainedResource(t *testing.T) {
 		}
 
 		// Unmarshal the second contained resource (Organization)
-		org, err := fhir.UnmarshalContainedResource[resources.Organization](contained, 1)
+		org, err := fhir.UnmarshalContainedResource[r5.Organization](contained, 1)
 		if err != nil {
 			t.Fatalf("UnmarshalContainedResource failed: %v", err)
 		}
@@ -137,7 +137,7 @@ func TestUnmarshalContainedResource(t *testing.T) {
 			json.RawMessage(`{"resourceType": "Patient", "id": "test"}`),
 		}
 
-		_, err := fhir.UnmarshalContainedResource[resources.Patient](contained, 5)
+		_, err := fhir.UnmarshalContainedResource[r5.Patient](contained, 5)
 		if err == nil {
 			t.Error("Expected error for out of range index, got nil")
 		}
@@ -148,7 +148,7 @@ func TestUnmarshalContainedResource(t *testing.T) {
 			json.RawMessage(`{"resourceType": "Patient", "id": "test"}`),
 		}
 
-		_, err := fhir.UnmarshalContainedResource[resources.Patient](contained, -1)
+		_, err := fhir.UnmarshalContainedResource[r5.Patient](contained, -1)
 		if err == nil {
 			t.Error("Expected error for negative index, got nil")
 		}
@@ -161,7 +161,7 @@ func TestAddContainedResource(t *testing.T) {
 		var contained []json.RawMessage
 
 		// Create a Patient
-		patient := resources.Patient{
+		patient := r5.Patient{
 			DomainResource: fhir.DomainResource{
 				Resource: fhir.Resource{
 					ResourceType: "Patient",
@@ -170,7 +170,7 @@ func TestAddContainedResource(t *testing.T) {
 			},
 		}
 		familyName := "Doe"
-		patient.Name = []resources.HumanName{
+		patient.Name = []r5.HumanName{
 			{
 				Family: &familyName,
 			},
@@ -188,7 +188,7 @@ func TestAddContainedResource(t *testing.T) {
 		}
 
 		// Verify we can unmarshal it back
-		retrieved, err := fhir.UnmarshalContainedResource[resources.Patient](contained, 0)
+		retrieved, err := fhir.UnmarshalContainedResource[r5.Patient](contained, 0)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal added resource: %v", err)
 		}
@@ -202,7 +202,7 @@ func TestAddContainedResource(t *testing.T) {
 		var contained []json.RawMessage
 
 		// Add Patient
-		patient := resources.Patient{
+		patient := r5.Patient{
 			DomainResource: fhir.DomainResource{
 				Resource: fhir.Resource{
 					ResourceType: "Patient",
@@ -218,7 +218,7 @@ func TestAddContainedResource(t *testing.T) {
 		}
 
 		// Add Organization
-		org := resources.Organization{
+		org := r5.Organization{
 			DomainResource: fhir.DomainResource{
 				Resource: fhir.Resource{
 					ResourceType: "Organization",
@@ -237,12 +237,12 @@ func TestAddContainedResource(t *testing.T) {
 		}
 
 		// Verify order is maintained
-		retrievedPatient, _ := fhir.UnmarshalContainedResource[resources.Patient](contained, 0)
+		retrievedPatient, _ := fhir.UnmarshalContainedResource[r5.Patient](contained, 0)
 		if retrievedPatient.ID == nil || *retrievedPatient.ID != "patient-1" {
 			t.Error("First resource should be Patient")
 		}
 
-		retrievedOrg, _ := fhir.UnmarshalContainedResource[resources.Organization](contained, 1)
+		retrievedOrg, _ := fhir.UnmarshalContainedResource[r5.Organization](contained, 1)
 		if retrievedOrg.ID == nil || *retrievedOrg.ID != "org-1" {
 			t.Error("Second resource should be Organization")
 		}
@@ -274,7 +274,7 @@ func TestGetContainedResourceByID(t *testing.T) {
 		}
 
 		// Verify we got the right resource
-		patient, err := fhir.UnmarshalResource[resources.Patient](raw)
+		patient, err := fhir.UnmarshalResource[r5.Patient](raw)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal found resource: %v", err)
 		}
@@ -289,7 +289,7 @@ func TestGetContainedResourceByID(t *testing.T) {
 			t.Fatalf("GetContainedResourceByID failed: %v", err)
 		}
 
-		org, err := fhir.UnmarshalResource[resources.Organization](raw)
+		org, err := fhir.UnmarshalResource[r5.Organization](raw)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal found resource: %v", err)
 		}
@@ -333,7 +333,7 @@ func TestGetContainedResourceByID(t *testing.T) {
 			t.Fatalf("GetContainedResourceByID failed: %v", err)
 		}
 
-		org, _ := fhir.UnmarshalResource[resources.Organization](raw)
+		org, _ := fhir.UnmarshalResource[r5.Organization](raw)
 		if org.ID == nil || *org.ID != "org-456" {
 			t.Error("Should have found organization with ID")
 		}

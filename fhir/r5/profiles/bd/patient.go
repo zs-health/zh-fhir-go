@@ -1,6 +1,7 @@
 package bd
 
 import (
+	"github.com/zs-health/zh-fhir-go/fhir"
 	"github.com/zs-health/zh-fhir-go/fhir/r5"
 )
 
@@ -21,7 +22,7 @@ func NewBDPatient() *BDPatient {
 	p := &BDPatient{}
 	profile := ProfileBDPatient
 	if p.Meta == nil {
-		p.Meta = &r5.Meta{}
+		p.Meta = &fhir.Meta{}
 	}
 	p.Meta.Profile = []string{profile}
 	return p
@@ -44,7 +45,4 @@ func (p *BDPatient) SetNames(englishName, banglaName string) {
 			Text: &englishName, // Primary text in English
 		},
 	}
-	
-	// In a real implementation, we would add the translation extension here
-	// For now, we use the Text field to represent the primary name
 }

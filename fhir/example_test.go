@@ -14,9 +14,9 @@ import (
 func ExamplePatient() {
 	birthDate := primitives.MustDate("1974-12-25")
 
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: boolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    stringPtr("official"),
 				Family: stringPtr("Doe"),
@@ -25,7 +25,7 @@ func ExamplePatient() {
 		},
 		Gender:    stringPtr("male"),
 		BirthDate: &birthDate,
-		Telecom: []resources.ContactPoint{
+		Telecom: []r5.ContactPoint{
 			{
 				System: stringPtr("phone"),
 				Value:  stringPtr("+1-555-1234"),
@@ -44,10 +44,10 @@ func ExamplePatient() {
 // ExampleObservation demonstrates creating a FHIR Observation resource
 // for vital signs (heart rate).
 func ExampleObservation() {
-	obs := &resources.Observation{
+	obs := &r5.Observation{
 		Status: "final",
-		Code: resources.CodeableConcept{
-			Coding: []resources.Coding{
+		Code: r5.CodeableConcept{
+			Coding: []r5.Coding{
 				{
 					System:  stringPtr("http://loinc.org"),
 					Code:    stringPtr("8867-4"),
@@ -56,7 +56,7 @@ func ExampleObservation() {
 			},
 			Text: stringPtr("Heart rate"),
 		},
-		Subject: &resources.Reference{
+		Subject: &r5.Reference{
 			Reference: stringPtr("Patient/example-patient"),
 			Display:   stringPtr("John Doe"),
 		},
@@ -79,9 +79,9 @@ func ExampleBundle_searchset() {
 	helper := fhir.NewBundleHelper(bundle)
 
 	// Add a patient
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: boolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Family: stringPtr("Smith"),
 				Given:  []string{"Jane"},
@@ -123,9 +123,9 @@ func ExampleBundleHelper_GetPatients() {
 
 // ExampleMarshalSummaryJSON demonstrates FHIR summary mode serialization.
 func ExampleMarshalSummaryJSON() {
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: boolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Family: stringPtr("Doe"),
 				Given:  []string{"John"},
@@ -146,9 +146,9 @@ func ExampleMarshalSummaryJSON() {
 func ExampleFHIRValidator() {
 	validator := validation.NewFHIRValidator()
 
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: boolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Family: stringPtr("Doe"),
 			},

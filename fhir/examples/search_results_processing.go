@@ -1,6 +1,6 @@
 //go:build ignore
 
-package main
+package examples
 
 import (
 	"encoding/json"
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	for _, patientJSON := range patients {
-		var patient resources.Patient
+		var patient r5.Patient
 		if err := json.Unmarshal(patientJSON, &patient); err != nil {
 			log.Printf("Error parsing patient: %v", err)
 			continue
@@ -68,7 +68,7 @@ func main() {
 	temperatures := 0
 
 	for _, obsJSON := range observations {
-		var obs resources.Observation
+		var obs r5.Observation
 		if err := json.Unmarshal(obsJSON, &obs); err != nil {
 			continue
 		}
@@ -98,7 +98,7 @@ func main() {
 	// Example 4: Follow references
 	fmt.Println("\n=== Reference Resolution ===")
 	if len(observations) > 0 {
-		var firstObs resources.Observation
+		var firstObs r5.Observation
 		if err := json.Unmarshal(observations[0], &firstObs); err == nil {
 			if firstObs.Subject != nil && firstObs.Subject.Reference != nil {
 				fmt.Printf("First observation references: %s\n", *firstObs.Subject.Reference)
@@ -106,7 +106,7 @@ func main() {
 				// Resolve the reference
 				subject, err := helper.ResolveReference(*firstObs.Subject.Reference)
 				if err == nil && subject != nil {
-					var patient resources.Patient
+					var patient r5.Patient
 					if err := json.Unmarshal(subject, &patient); err == nil {
 						if len(patient.Name) > 0 && patient.Name[0].Family != nil {
 							fmt.Printf("  Resolved to patient: %s\n", *patient.Name[0].Family)

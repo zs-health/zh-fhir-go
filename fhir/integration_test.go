@@ -18,9 +18,9 @@ func TestIntegration_PatientFullWorkflow(t *testing.T) {
 	active := true
 	birthDate := primitives.MustDate("1974-12-25")
 
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: &active,
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Doe"),
@@ -46,7 +46,7 @@ func TestIntegration_PatientFullWorkflow(t *testing.T) {
 	}
 
 	// 4. Unmarshal back
-	var patient2 resources.Patient
+	var patient2 r5.Patient
 	if err := json.Unmarshal(data, &patient2); err != nil {
 		t.Fatalf("Failed to unmarshal patient: %v", err)
 	}
@@ -115,13 +115,13 @@ func TestIntegration_ValidationErrors(t *testing.T) {
 	validator := validation.NewFHIRValidator()
 
 	// Patient with no data - should still validate (all fields optional)
-	patient := &resources.Patient{}
+	patient := &r5.Patient{}
 	if err := validator.Validate(patient); err != nil {
 		t.Logf("Empty patient validation: %v", err)
 	}
 
 	// Observation with missing required field (status is required)
-	obs := &resources.Observation{
+	obs := &r5.Observation{
 		// Missing Status - required field
 	}
 	obs.ID = testutil.StringPtr("obs-1")
@@ -136,9 +136,9 @@ func TestIntegration_ValidationErrors(t *testing.T) {
 // TestIntegration_SummaryMode tests summary mode basics
 func TestIntegration_SummaryMode(t *testing.T) {
 	// Create a patient
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: testutil.BoolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Doe"),
@@ -146,7 +146,7 @@ func TestIntegration_SummaryMode(t *testing.T) {
 			},
 		},
 		Gender: testutil.StringPtr("male"),
-		Address: []resources.Address{
+		Address: []r5.Address{
 			{
 				Line: []string{"123 Main St"},
 				City: testutil.StringPtr("Springfield"),
@@ -220,7 +220,7 @@ func TestIntegration_PrimitivesHandling(t *testing.T) {
 // TestIntegration_ResourceInheritance tests resource inheritance
 func TestIntegration_ResourceInheritance(t *testing.T) {
 	// Patient extends DomainResource
-	patient := &resources.Patient{}
+	patient := &r5.Patient{}
 	patient.ID = testutil.StringPtr("example")
 	patient.ResourceType = "Patient"
 	patient.Meta = &fhir.Meta{
@@ -292,15 +292,15 @@ func TestIntegration_RoundtripJSONForResourceTypes(t *testing.T) {
 			var resource interface{}
 			switch tc.resourceType {
 			case "Patient":
-				resource = &resources.Patient{}
+				resource = &r5.Patient{}
 			case "Observation":
-				resource = &resources.Observation{}
+				resource = &r5.Observation{}
 			case "Bundle":
-				resource = &resources.Bundle{}
+				resource = &r5.Bundle{}
 			case "Encounter":
-				resource = &resources.Encounter{}
+				resource = &r5.Encounter{}
 			case "DiagnosticReport":
-				resource = &resources.DiagnosticReport{}
+				resource = &r5.DiagnosticReport{}
 			default:
 				t.Fatalf("Unknown resource type: %s", tc.resourceType)
 			}
@@ -347,15 +347,15 @@ func TestIntegration_RoundtripJSONForResourceTypes(t *testing.T) {
 // TestIntegration_BundleOperationsEndToEnd tests complete Bundle workflow
 func TestIntegration_BundleOperationsEndToEnd(t *testing.T) {
 	// 1. Create a Bundle with multiple resources
-	bundle := &resources.Bundle{
+	bundle := &r5.Bundle{
 		Type: "transaction",
 	}
 	bundle.ResourceType = "Bundle"
 
 	// 2. Create Patient resource
-	patient := &resources.Patient{
+	patient := &r5.Patient{
 		Active: testutil.BoolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Family: testutil.StringPtr("Test"),
 				Given:  []string{"Integration"},
@@ -371,11 +371,11 @@ func TestIntegration_BundleOperationsEndToEnd(t *testing.T) {
 		t.Fatalf("Failed to marshal patient: %v", err)
 	}
 
-	bundle.Entry = []resources.BundleEntry{
+	bundle.Entry = []r5.BundleEntry{
 		{
 			FullUrl:  testutil.StringPtr("Patient/patient-1"),
 			Resource: json.RawMessage(patientJSON),
-			Request: &resources.BundleEntryRequest{
+			Request: &r5.BundleEntryRequest{
 				Method: "POST",
 				URL:    "Patient",
 			},
@@ -389,7 +389,7 @@ func TestIntegration_BundleOperationsEndToEnd(t *testing.T) {
 	}
 
 	// 5. Unmarshal Bundle back
-	var retrievedBundle resources.Bundle
+	var retrievedBundle r5.Bundle
 	if err := json.Unmarshal(bundleJSON, &retrievedBundle); err != nil {
 		t.Fatalf("Failed to unmarshal bundle: %v", err)
 	}
@@ -404,7 +404,7 @@ func TestIntegration_BundleOperationsEndToEnd(t *testing.T) {
 	}
 
 	// 7. Extract Patient from Bundle entry using generic helper
-	retrievedPatient, err := fhir.UnmarshalResource[resources.Patient](retrievedBundle.Entry[0].Resource)
+	retrievedPatient, err := fhir.UnmarshalResource[r5.Patient](retrievedBundle.Entry[0].Resource)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal patient from bundle: %v", err)
 	}
@@ -432,7 +432,7 @@ func TestIntegration_BundleOperationsEndToEnd(t *testing.T) {
 // TestIntegration_ChoiceTypeScenariosFromSpec tests choice type scenarios
 func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 	t.Run("Patient deceased[x] with boolean", func(t *testing.T) {
-		patient := &resources.Patient{
+		patient := &r5.Patient{
 			Active:          testutil.BoolPtr(true),
 			DeceasedBoolean: testutil.BoolPtr(true),
 		}
@@ -451,7 +451,7 @@ func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 			t.Fatalf("Marshal failed: %v", err)
 		}
 
-		var patient2 resources.Patient
+		var patient2 r5.Patient
 		if err := json.Unmarshal(data, &patient2); err != nil {
 			t.Fatalf("Unmarshal failed: %v", err)
 		}
@@ -469,7 +469,7 @@ func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 
 	t.Run("Patient deceased[x] with dateTime", func(t *testing.T) {
 		deceasedDate := primitives.MustDateTime("2024-01-15T10:30:00Z")
-		patient := &resources.Patient{
+		patient := &r5.Patient{
 			Active:           testutil.BoolPtr(true),
 			DeceasedDateTime: &deceasedDate,
 		}
@@ -488,7 +488,7 @@ func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 			t.Fatalf("Marshal failed: %v", err)
 		}
 
-		var patient2 resources.Patient
+		var patient2 r5.Patient
 		if err := json.Unmarshal(data, &patient2); err != nil {
 			t.Fatalf("Unmarshal failed: %v", err)
 		}
@@ -509,12 +509,12 @@ func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 	})
 
 	t.Run("Observation value[x] with quantity", func(t *testing.T) {
-		obs := &resources.Observation{
+		obs := &r5.Observation{
 			Status: "final",
-			Code: resources.CodeableConcept{
+			Code: r5.CodeableConcept{
 				Text: testutil.StringPtr("Blood Pressure"),
 			},
-			ValueQuantity: &resources.Quantity{
+			ValueQuantity: &r5.Quantity{
 				Value:  testutil.Float64Ptr(120.0),
 				Unit:   testutil.StringPtr("mmHg"),
 				System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -536,7 +536,7 @@ func TestIntegration_ChoiceTypeScenariosFromSpec(t *testing.T) {
 			t.Fatalf("Marshal failed: %v", err)
 		}
 
-		var obs2 resources.Observation
+		var obs2 r5.Observation
 		if err := json.Unmarshal(data, &obs2); err != nil {
 			t.Fatalf("Unmarshal failed: %v", err)
 		}
@@ -559,7 +559,7 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 
 	t.Run("Invalid choice type - multiple fields set", func(t *testing.T) {
 		deceasedDate := primitives.MustDateTime("2024-01-15T10:30:00Z")
-		patient := &resources.Patient{
+		patient := &r5.Patient{
 			Active:           testutil.BoolPtr(true),
 			DeceasedBoolean:  testutil.BoolPtr(true),
 			DeceasedDateTime: &deceasedDate, // Both set - violates mutual exclusion
@@ -577,7 +577,7 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 	t.Run("Invalid JSON - malformed", func(t *testing.T) {
 		malformedJSON := []byte(`{"resourceType": "Patient", "id": "test", "active": "not-a-boolean"}`)
 
-		var patient resources.Patient
+		var patient r5.Patient
 		err := json.Unmarshal(malformedJSON, &patient)
 		// Note: JSON unmarshaling is permissive, might not fail on type mismatches
 		// This test documents the behavior
@@ -585,9 +585,9 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 	})
 
 	t.Run("Bundle with invalid resource reference", func(t *testing.T) {
-		bundle := &resources.Bundle{
+		bundle := &r5.Bundle{
 			Type: "searchset",
-			Entry: []resources.BundleEntry{
+			Entry: []r5.BundleEntry{
 				{
 					FullUrl:  testutil.StringPtr("InvalidReference"),
 					Resource: json.RawMessage(`{"invalid": "json"}`),
@@ -598,7 +598,7 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 
 		// Skip validation for json.RawMessage fields (validator counts bytes, not elements)
 		// Try to extract resource - JSON unmarshaling is permissive and won't fail on missing fields
-		patient, err := fhir.UnmarshalResource[resources.Patient](bundle.Entry[0].Resource)
+		patient, err := fhir.UnmarshalResource[r5.Patient](bundle.Entry[0].Resource)
 		// Note: This succeeds but produces an empty/invalid Patient
 		t.Logf("Unmarshal result: error=%v, patient.ResourceType=%s", err, patient.ResourceType)
 
@@ -610,7 +610,7 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 	})
 
 	t.Run("Contained resource with invalid type", func(t *testing.T) {
-		patient := &resources.Patient{
+		patient := &r5.Patient{
 			Active: testutil.BoolPtr(true),
 		}
 		patient.ResourceType = "Patient"
@@ -622,7 +622,7 @@ func TestIntegration_ErrorCasesAndValidationFailures(t *testing.T) {
 		}
 
 		// Try to unmarshal contained resource (should succeed but with unknown type)
-		var result resources.Observation
+		var result r5.Observation
 		err := json.Unmarshal(patient.Contained[0], &result)
 		// Note: JSON unmarshaling is permissive and won't fail on unknown resourceType
 		// This test documents that behavior

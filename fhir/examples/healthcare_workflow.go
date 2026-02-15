@@ -1,6 +1,6 @@
 //go:build ignore
 
-package main
+package examples
 
 import (
 	"encoding/json"
@@ -49,12 +49,12 @@ func main() {
 	fmt.Printf("\nJSON output (first 500 chars):\n%s...\n", string(data[:min(500, len(data))]))
 }
 
-func createPatient() *resources.Patient {
+func createPatient() *r5.Patient {
 	birthDate := primitives.MustDate("1970-05-15")
-	return &resources.Patient{
+	return &r5.Patient{
 		ID:     testutil.StringPtr("patient-001"),
 		Active: testutil.BoolPtr(true),
-		Name: []resources.HumanName{
+		Name: []r5.HumanName{
 			{
 				Use:    testutil.StringPtr("official"),
 				Family: testutil.StringPtr("Smith"),
@@ -63,7 +63,7 @@ func createPatient() *resources.Patient {
 		},
 		Gender:    testutil.StringPtr("female"),
 		BirthDate: &birthDate,
-		Telecom: []resources.ContactPoint{
+		Telecom: []r5.ContactPoint{
 			{
 				System: testutil.StringPtr("phone"),
 				Value:  testutil.StringPtr("+1-555-0123"),
@@ -74,7 +74,7 @@ func createPatient() *resources.Patient {
 				Value:  testutil.StringPtr("jane.smith@example.com"),
 			},
 		},
-		Address: []resources.Address{
+		Address: []r5.Address{
 			{
 				Use:        testutil.StringPtr("home"),
 				Line:       []string{"123 Main St", "Apt 4B"},
@@ -87,14 +87,14 @@ func createPatient() *resources.Patient {
 	}
 }
 
-func createEncounter(patientID *string) *resources.Encounter {
+func createEncounter(patientID *string) *r5.Encounter {
 	now := primitives.MustDateTime(time.Now().Format(time.RFC3339))
-	return &resources.Encounter{
+	return &r5.Encounter{
 		ID:     testutil.StringPtr("encounter-001"),
 		Status: "finished",
-		Class: []resources.CodeableConcept{
+		Class: []r5.CodeableConcept{
 			{
-				Coding: []resources.Coding{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/v3-ActCode"),
 						Code:    testutil.StringPtr("AMB"),
@@ -103,27 +103,27 @@ func createEncounter(patientID *string) *resources.Encounter {
 				},
 			},
 		},
-		Subject: &resources.Reference{
+		Subject: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Patient/%s", *patientID)),
 			Display:   testutil.StringPtr("Jane Smith"),
 		},
-		Period: &resources.Period{
+		Period: &r5.Period{
 			Start: &now,
 			End:   &now,
 		},
 	}
 }
 
-func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
+func createVitalSigns(patientID, encounterID *string) []*r5.Observation {
 	effectiveDateTime := primitives.MustDateTime(time.Now().Format(time.RFC3339))
 
 	// Blood Pressure
-	bp := &resources.Observation{
+	bp := &r5.Observation{
 		ID:     testutil.StringPtr("obs-bp-001"),
 		Status: "final",
-		Category: []resources.CodeableConcept{
+		Category: []r5.CodeableConcept{
 			{
-				Coding: []resources.Coding{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/observation-category"),
 						Code:    testutil.StringPtr("vital-signs"),
@@ -132,8 +132,8 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 				},
 			},
 		},
-		Code: resources.CodeableConcept{
-			Coding: []resources.Coding{
+		Code: r5.CodeableConcept{
+			Coding: []r5.Coding{
 				{
 					System:  testutil.StringPtr("http://loinc.org"),
 					Code:    testutil.StringPtr("85354-9"),
@@ -142,17 +142,17 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 			},
 			Text: testutil.StringPtr("Blood Pressure"),
 		},
-		Subject: &resources.Reference{
+		Subject: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Patient/%s", *patientID)),
 		},
-		Encounter: &resources.Reference{
+		Encounter: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Encounter/%s", *encounterID)),
 		},
 		EffectiveDateTime: &effectiveDateTime,
-		Component: []resources.ObservationComponent{
+		Component: []r5.ObservationComponent{
 			{
-				Code: resources.CodeableConcept{
-					Coding: []resources.Coding{
+				Code: r5.CodeableConcept{
+					Coding: []r5.Coding{
 						{
 							System:  testutil.StringPtr("http://loinc.org"),
 							Code:    testutil.StringPtr("8480-6"),
@@ -160,7 +160,7 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 						},
 					},
 				},
-				ValueQuantity: &resources.Quantity{
+				ValueQuantity: &r5.Quantity{
 					Value:  float64Ptr(120),
 					Unit:   testutil.StringPtr("mmHg"),
 					System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -168,8 +168,8 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 				},
 			},
 			{
-				Code: resources.CodeableConcept{
-					Coding: []resources.Coding{
+				Code: r5.CodeableConcept{
+					Coding: []r5.Coding{
 						{
 							System:  testutil.StringPtr("http://loinc.org"),
 							Code:    testutil.StringPtr("8462-4"),
@@ -177,7 +177,7 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 						},
 					},
 				},
-				ValueQuantity: &resources.Quantity{
+				ValueQuantity: &r5.Quantity{
 					Value:  float64Ptr(80),
 					Unit:   testutil.StringPtr("mmHg"),
 					System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -188,12 +188,12 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 	}
 
 	// Heart Rate
-	hr := &resources.Observation{
+	hr := &r5.Observation{
 		ID:     testutil.StringPtr("obs-hr-001"),
 		Status: "final",
-		Category: []resources.CodeableConcept{
+		Category: []r5.CodeableConcept{
 			{
-				Coding: []resources.Coding{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://terminology.hl7.org/CodeSystem/observation-category"),
 						Code:    testutil.StringPtr("vital-signs"),
@@ -202,8 +202,8 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 				},
 			},
 		},
-		Code: resources.CodeableConcept{
-			Coding: []resources.Coding{
+		Code: r5.CodeableConcept{
+			Coding: []r5.Coding{
 				{
 					System:  testutil.StringPtr("http://loinc.org"),
 					Code:    testutil.StringPtr("8867-4"),
@@ -212,14 +212,14 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 			},
 			Text: testutil.StringPtr("Heart Rate"),
 		},
-		Subject: &resources.Reference{
+		Subject: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Patient/%s", *patientID)),
 		},
-		Encounter: &resources.Reference{
+		Encounter: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Encounter/%s", *encounterID)),
 		},
 		EffectiveDateTime: &effectiveDateTime,
-		ValueQuantity: &resources.Quantity{
+		ValueQuantity: &r5.Quantity{
 			Value:  float64Ptr(72),
 			Unit:   testutil.StringPtr("beats/minute"),
 			System: testutil.StringPtr("http://unitsofmeasure.org"),
@@ -227,19 +227,19 @@ func createVitalSigns(patientID, encounterID *string) []*resources.Observation {
 		},
 	}
 
-	return []*resources.Observation{bp, hr}
+	return []*r5.Observation{bp, hr}
 }
 
-func createMedicationRequest(patientID, encounterID *string) *resources.MedicationRequest {
+func createMedicationRequest(patientID, encounterID *string) *r5.MedicationRequest {
 	authoredOn := primitives.MustDateTime(time.Now().Format(time.RFC3339))
 
-	return &resources.MedicationRequest{
+	return &r5.MedicationRequest{
 		ID:     testutil.StringPtr("medreq-001"),
 		Status: "active",
 		Intent: "order",
-		Medication: resources.CodeableReference{
-			Concept: &resources.CodeableConcept{
-				Coding: []resources.Coding{
+		Medication: r5.CodeableReference{
+			Concept: &r5.CodeableConcept{
+				Coding: []r5.Coding{
 					{
 						System:  testutil.StringPtr("http://www.nlm.nih.gov/research/umls/rxnorm"),
 						Code:    testutil.StringPtr("197361"),
@@ -249,25 +249,25 @@ func createMedicationRequest(patientID, encounterID *string) *resources.Medicati
 				Text: testutil.StringPtr("Lisinopril 10mg tablet"),
 			},
 		},
-		Subject: &resources.Reference{
+		Subject: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Patient/%s", *patientID)),
 			Display:   testutil.StringPtr("Jane Smith"),
 		},
-		Encounter: &resources.Reference{
+		Encounter: &r5.Reference{
 			Reference: testutil.StringPtr(fmt.Sprintf("Encounter/%s", *encounterID)),
 		},
 		AuthoredOn: &authoredOn,
-		DosageInstruction: []resources.Dosage{
+		DosageInstruction: []r5.Dosage{
 			{
 				Text:   testutil.StringPtr("Take one tablet by mouth once daily"),
-				Timing: &resources.Timing{},
+				Timing: &r5.Timing{},
 			},
 		},
 	}
 }
 
-func createBundle(patient *resources.Patient, encounter *resources.Encounter,
-	observations []*resources.Observation, medication *resources.MedicationRequest) *fhir.Bundle {
+func createBundle(patient *r5.Patient, encounter *r5.Encounter,
+	observations []*r5.Observation, medication *r5.MedicationRequest) *fhir.Bundle {
 
 	bundle := &fhir.Bundle{
 		Type: "collection",
