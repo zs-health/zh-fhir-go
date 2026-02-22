@@ -138,6 +138,10 @@ store sensitive information there.
 Secrets used by GitHub Actions (such as additional registry credentials) should be
 configured via the repository **Settings → Secrets** (see the [CI](#ci) section below).
 
+> ⚠️ **Do not store personal access tokens or other real secrets in `.env`.**
+> `.env` is ignored by Git, but if you ever share it accidentally the tokens should
+> be revoked and rotated immediately. Use repository secrets instead.
+
 ## 🚚 Publishing & Deployment
 
 All build, test, documentation and publishing steps are automated using GitHub Actions.
