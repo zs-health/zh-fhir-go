@@ -28,7 +28,14 @@ jobs:
       run: go vet ./...
 
     - name: Format check
-      run: go fmt ./... | grep -v "^" # this will fail if formatting is needed
+      run: |
+        # list files that would be reformatted
+        UNFMT=$(gofmt -l ./...)
+        if [ -n "$UNFMT" ]; then
+          echo "The following files need formatting:" >&2
+          echo "$UNFMT" >&2
+          exit 1
+        fi
 
     - name: Test
       run: go test -v ./...

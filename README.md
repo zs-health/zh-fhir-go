@@ -141,6 +141,10 @@ configured via the repository **Settings → Secrets** (see the [CI](#ci) sectio
 > ⚠️ **Do not store personal access tokens or other real secrets in `.env`.**
 > `.env` is ignored by Git, but if you ever share it accidentally the tokens should
 > be revoked and rotated immediately. Use repository secrets instead.
+>
+> For detailed non‑technical guidance on configuring credentials, tokens, and
+> integrations with third‑party services (Docker Hub, cloud providers, etc.), see
+> [CREDENTIALS-GUIDELINES.md](CREDENTIALS-GUIDELINES.md).
 
 ## 🚚 Publishing & Deployment
 
