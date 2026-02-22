@@ -10,6 +10,9 @@ hero:
       text: Get Started
       link: /guide/introduction
     - theme: alt
+      text: View FHIR IG
+      link: https://zs-health.github.io/zh-fhir-go/
+    - theme: alt
       text: View on GitHub
       link: https://github.com/zs-health/zh-fhir-go
   image:

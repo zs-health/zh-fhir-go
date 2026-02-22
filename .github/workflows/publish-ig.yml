@@ -1,0 +1,78 @@
+name: Publish FHIR IG and Docs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-publish-ig:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install documentation dependencies
+        run: npm install
+
+      - name: Build VitePress documentation
+        run: npm run docs:build
+
+      - name: Setup Java (for IG Publisher)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build FHIR IG
+        uses: qligier/fhir-ig-action@v0.3.0
+        with:
+          ig-path: 'BD-Core-FHIR-IG'
+          sushi-config: 'BD-Core-FHIR-IG/sushi-config.yaml'
+          ig-publisher-version: 'latest'
+          output-path: 'BD-Core-FHIR-IG/output'
+
+      - name: Upload FHIR IG artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: BD-Core-FHIR-IG/output
+          name: fhir-ig
+
+      - name: Upload VitePress documentation artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+          name: vitepress-docs
+
+  deploy-pages:
+    needs: build-and-publish-ig
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy FHIR IG to GitHub Pages
+        id: deployment-ig
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: fhir-ig
+
+      - name: Deploy VitePress documentation to GitHub Pages
+        id: deployment-docs
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: vitepress-docs

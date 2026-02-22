@@ -4,14 +4,43 @@
 **Version**: 0.4.0-alpha  
 **Documentation**: [https://zs-health.github.io/zh-fhir-go](https://zs-health.github.io/zh-fhir-go)
 
+## 🌟 What This Repository Does
+
+This repository contains the core components for a **FHIR (Fast Healthcare Interoperability Resources) R5** implementation tailored for Bangladesh. In simple terms, FHIR is a global standard that helps different healthcare computer systems talk to each other. Think of it as a universal language for health data.
+
+An **Implementation Guide (IG)** is like a detailed instruction manual that explains how to use FHIR for a specific purpose or region. This repository includes the Bangladesh Core FHIR IG, which provides guidelines for exchanging health information within Bangladesh.
+
 ## 📋 Table of Contents
 
-1. [Quick Start](#-quick-start)
-2. [Features](#-features)
-3. [Documentation](#-documentation)
-4. [Project Structure](#-project-structure)
-5. [Build & Deploy](#-build--deploy)
-6. [Resources & Support](#-resources--support)
+1. [What This Repository Does](#-what-this-repository-does)
+2. [How to View the Published IG](#-how-to-view-the-published-ig)
+3. [How Changes Are Published](#-how-changes-are-published)
+4. [For Non-Technical Users](#-for-non-technical-users)
+5. [Quick Start](#-quick-start)
+6. [Features](#-features)
+7. [Documentation](#-documentation)
+8. [Project Structure](#-project-structure)
+9. [Build & Deploy](#-build--deploy)
+10. [Resources & Support](#-resources--support)
+
+## 🌐 How to View the Published IG
+
+The complete Bangladesh Core FHIR Implementation Guide and related documentation are automatically published and available online:
+
+*   **FHIR Implementation Guide**: [https://zs-health.github.io/zh-fhir-go/](https://zs-health.github.io/zh-fhir-go/)
+*   **VitePress Documentation**: [https://zs-health.github.io/zh-fhir-go/](https://zs-health.github.io/zh-fhir-go/)
+
+## 🔄 How Changes Are Published
+
+This repository uses **GitHub Actions** to automatically build and publish the FHIR IG and documentation to **GitHub Pages** whenever changes are pushed to the `main` branch. This means that any updates made to the FHIR profiles or documentation will be reflected on the live website without manual intervention.
+
+## 🧑‍💻 For Non-Technical Users
+
+If you're not a developer, here's what you need to know:
+
+*   **Viewing the Published Documentation**: You can access the latest version of the FHIR IG and project documentation at the links above. This is where you'll find all the information about how health data is structured and exchanged in Bangladesh.
+*   **Reporting Issues**: If you find any issues with the documentation, the FHIR profiles, or have suggestions for improvement, please report them on our [GitHub Issues page](https://github.com/zs-health/zh-fhir-go/issues). Your feedback is valuable!
+*   **What Happens When Code is Pushed**: When a developer makes changes and pushes them to the `main` branch, our automated system takes over. It builds the IG and documentation, and then publishes them to GitHub Pages. This process usually takes a few minutes.
 
 ## 🚀 Quick Start
 
@@ -80,6 +109,7 @@ zh-fhir-go/
 ```
 
 ## 🛠 Build & Deploy
+
 
 ### Local Development
 
