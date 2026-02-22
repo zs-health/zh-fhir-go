@@ -21,7 +21,9 @@ An **Implementation Guide (IG)** is like a detailed instruction manual that expl
 7. [Documentation](#-documentation)
 8. [Project Structure](#-project-structure)
 9. [Build & Deploy](#-build--deploy)
-10. [Resources & Support](#-resources--support)
+10. [Configuration](#-configuration)
+11. [Community & Contribution](#-community--contribution)
+12. [Resources & Support](#-resources--support)
 
 ## 🌐 How to View the Published IG
 
@@ -42,7 +44,20 @@ If you're not a developer, here's what you need to know:
 *   **Reporting Issues**: If you find any issues with the documentation, the FHIR profiles, or have suggestions for improvement, please report them on our [GitHub Issues page](https://github.com/zs-health/zh-fhir-go/issues). Your feedback is valuable!
 *   **What Happens When Code is Pushed**: When a developer makes changes and pushes them to the `main` branch, our automated system takes over. It builds the IG and documentation, and then publishes them to GitHub Pages. This process usually takes a few minutes.
 
-## 🚀 Quick Start
+## � For Non-Developers
+
+If you're not a programmer, don't worry – you can still use and explore everything this
+repository provides. The most important things for you are the **published documentation**
+and the **Implementation Guide website**, which are updated automatically whenever any
+changes are merged to the `main` branch. You do **not** need to install Go or run any code.
+
+* 💡 **View the live IG and docs**: https://zs-health.github.io/zh-fhir-go/
+* 📝 **Report issues or suggest edits**: open a ticket on GitHub (see the Issues page).
+
+The rest of this README and the code in this repository are primarily for people who
+build or modify the system. Feel free to skip ahead to the "📞 Resources & Support" section.
+
+## �🚀 Quick Start
 
 ```bash
 # Clone the repository
@@ -87,6 +102,11 @@ Visit our **modern documentation site**: [https://zs-health.github.io/zh-fhir-go
 
 ## 📁 Project Structure
 
+> **Note:** the `openspec/` directory contains internal design documents and specifications
+> used by developers. It is optional for end users and can be removed or ignored if you
+> only care about the compiled library and documentation.
+
+
 ```
 zh-fhir-go/
 ├── cmd/zh-fhir/           # CLI application
@@ -108,10 +128,40 @@ zh-fhir-go/
 └── .github/workflows/     # CI/CD
 ```
 
-## 🛠 Build & Deploy
+## � Configuration
+
+This project uses environment variables for local development and testing. Create a copy of
+`.env.example` named `.env` and fill in any values you need (port numbers, database
+credentials, API keys, etc). The real `.env` file is ignored by Git so it's safe to
+store sensitive information there.
+
+Secrets used by GitHub Actions (such as additional registry credentials) should be
+configured via the repository **Settings → Secrets** (see the [CI](#ci) section below).
+
+## 🚚 Publishing & Deployment
+
+All build, test, documentation and publishing steps are automated using GitHub Actions.
+Whenever a commit is pushed to the `main` branch of the **GitHub repository**:
+
+1. CI runs (`ci.yml`): compile code, run linter/vet/format checks, execute tests.
+2. `deploy.yml` builds a Docker image and pushes it to the GitHub Container Registry
+   (`ghcr.io/${{ github.repository }}`) using the standard `GITHUB_TOKEN` credential.
+3. `publish-ig.yml` builds the FHIR Implementation Guide and the VitePress site, then
+   deploys them to **GitHub Pages**.
+
+> ⚙️ To make this work you only need to enable GitHub Pages in the repository settings
+> and (optionally) add any extra secrets under **Settings → Secrets** for external
+> services like cloud providers or container registries.
+
+After the workflows complete, the live documentation and container image are available
+without any manual intervention.
+
+---
+
+The remainder of this file covers the development commands mentioned earlier.
 
 
-### Local Development
+### Local Development (for developers)
 
 ```bash
 # Install dependencies
@@ -127,7 +177,7 @@ go build -v ./...
 ./zh-fhir --help
 ```
 
-### Docker
+### Docker (container images)
 
 ```bash
 # Build Docker image
@@ -166,6 +216,11 @@ npm run docs:build
 - **BDPatient**: NID, BRN, UHID identifiers
 - **BDAddress**: Administrative divisions
 - **Rohingya**: FCN, Progress ID, Camp locations
+
+## 🌐 Community & Contribution
+
+We welcome contributions from the community. Please read [CONTRIBUTING.md](CONTRIBUTING.md)
+and follow the [Code of Conduct](CODE_OF_CONDUCT.md) when participating.
 
 ## 📞 Resources & Support
 

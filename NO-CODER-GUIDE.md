@@ -39,6 +39,34 @@ To help you understand the jargon, here's a quick glossary:
 *   **Code System**: A comprehensive list of codes and their meanings (e.g., ICD-11 for diseases).
 *   **Value Set**: A subset of codes from one or more code systems, used for a specific purpose (e.g., a value set for types of blood groups).
 
+## 🖥️ Trying the Server Locally (optional)
+
+If you're curious and would like to run a copy of the server on your own computer, you
+can do so without writing any code. You just need to install Go (https://go.dev) and
+follow these steps in a terminal:
+
+```bash
+# clone the repository
+git clone https://github.com/zs-health/zh-fhir-go.git
+cd zh-fhir-go
+
+# download dependencies
+go mod download
+
+# build the command-line tool
+make build            # or: go build -o zh-fhir ./cmd/zh-fhir
+
+# start the FHIR server on port 8080
+./zh-fhir --server --port 8080
+```
+
+Once the server is running, you can visit `http://localhost:8080/fhir` in your browser
+to see the raw API output, or use a FHIR client such as [Postman](https://www.postman.com)
+with the base URL `http://localhost:8080/fhir`.
+
+Most people who do this are developers or technical users, but it is easy enough for
+anyone to try as long as you're comfortable running a couple of commands.
+
 ## 🤝 How to Report Issues or Suggest Improvements
 
 Your feedback is crucial for improving this Implementation Guide. If you find any errors, have suggestions for new content, or notice anything unclear, please:

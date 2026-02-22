@@ -24,5 +24,11 @@ jobs:
     - name: Build
       run: go build -v ./...
 
+    - name: Vet
+      run: go vet ./...
+
+    - name: Format check
+      run: go fmt ./... | grep -v "^" # this will fail if formatting is needed
+
     - name: Test
       run: go test -v ./...
