@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'  # use Node 18 to avoid VitePress ESM/require conflict
 
       - name: Install documentation dependencies
         run: npm install
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment-ig.outputs.page_url }}
     steps:
       - name: Deploy FHIR IG to GitHub Pages
         id: deployment-ig
