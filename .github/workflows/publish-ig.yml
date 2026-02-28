@@ -61,6 +61,9 @@ jobs:
   deploy-pages:
     needs: build-and-publish-ig
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment-ig.outputs.page_url }}
